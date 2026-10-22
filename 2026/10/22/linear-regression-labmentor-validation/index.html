@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>线性回归练习与 LabMentor 验收记录 | 张陈培骥的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/10/22/linear-regression-labmentor-validation/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性回归练习与 LabMentor 验收记录">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/10/22/linear-regression-labmentor-validation/">
+<meta name="description" content="线性回归练习、班级材料统计核对，以及 LabMentor 来源修复与三项定向验收记录。">
+<meta property="og:description" content="线性回归练习、班级材料统计核对，以及 LabMentor 来源修复与三项定向验收记录。">
+<meta property="article:published_time" content="2026-10-22T14:00:00Z">
+<meta property="article:modified_time" content="2026-10-22T15:53:00Z">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/10/22/linear-regression-labmentor-validation/"><header class="post-header"><h1 class="post-title" itemprop="name headline">线性回归练习与 LabMentor 验收记录</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-10-22T22:00:00+08:00">2026-10-22</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header><div class="post-body" itemprop="articleBody"><p>日期：2026-10-22（北京时间）</p>
+<p>今天主要围绕三件事展开：梳理线性回归练习，准备班集体评优 PPT 的制作要求，以及继续修复 LabMentor 的知识答惑。课程练习还停留在理解任务和准备代码，项目则完成了新的草稿修改与定向测试，但没有达到完整回归的门槛。</p>
+<h2 id="section-1">先补上昨晚的进展</h2>
+<p>昨天 22 点的草稿记录了 LabMentor 当时的连接阻塞。此后操作恢复，六处提示词修订于 22:34 保存，后续交付报告记录了五项定向测试和十轮独立会话回归：定向两项通过、三项失败，十轮六项通过、四项失败。</p>
+<p>这部分属于 10 月 21 日晚间新增记录，不能再沿用“昨天没有执行测试”的结论，也不算作今天的测试成绩。今天继续处理的是 U1 简答、F17 引用和 F18 缺型号时的回答范围，没有重复把原版复盘工作流迁移当成新成果。</p>
+<h2 id="section-2">线性回归练习从哪里下手</h2>
+<p>晚上，我上传了 Auto MPG 实验截图，询问两道思考题如何完成，随后又让 ChatGPT 整理了不带注释的代码版本。</p>
+<p>第一题要求自己实现梯度下降来训练线性回归。需要展开的步骤包括初始化权重和截距、计算预测误差、求梯度，再按学习率更新参数。比起只调用一次模型训练接口，这道题把参数如何变化直接放到了循环里。</p>
+<p>第二题关注特征选择：选出与 MPG 相关系数绝对值最大的四个特征，重新训练，并与全部特征的模型比较。负相关同样可能很强，所以排序前要取绝对值；比较时还要保留相同的测试样本，避免把样本变化误当成模型改进。</p>
+<p>这里有一个需要落实到代码的细节：得到的简化代码沿用了全数据相关性，而此前解释已经给出“仅用训练集重新计算相关性”的替换方案。严格评估时，特征选择和标准化参数都应从训练集获得，不能让测试标签提前参与模型构建。这也是 <a href="https://scikit-learn.org/stable/common_pitfalls.html#data-leakage" target="_blank" rel="noopener">scikit-learn 数据泄漏说明</a>强调的边界。</p>
+<p>目前我拿到了任务解释和代码，还没有在这份记录中补上自己的损失曲线和测试指标。因此，今天先记下实现思路，不预先写“已经收敛”或“四个特征效果更好”。下一步要看的，是实际运行得到的 MSE、RMSE、MAE 和 R² 对比，而不是代码看起来是否完整。</p>
+<h2 id="section-3">班集体材料先统一统计口径</h2>
+<p>下午，我继续准备软件工程三班评优答辩 PPT，明确了红色主视觉，并先后整理给 Codex、Claude Code 使用的制作提示词。</p>
+<p>比页面设计更需要先确定的是数据范围。我明确了 2025—2026 学年按 30 人统计。随后生成的数据核对记录指出：新增课程明细与旧支撑材料存在差异，课程“门次”也不能理解为不同课程的数量；上传的志愿服务明细没有覆盖本班，不能把查不到记录写成零参与。</p>
+<p>这些核对结果需要跟着来源保留，不能为了让页面显得完整就补出一个数字。公开展示也只需要班级汇总，不需要放同学的个人明细。</p>
+<p>今天这部分可确认的进展是制作要求和数据核对说明已经形成。最终 PPT 是否完成、是否已统一原支撑材料，以及正式审核和提交情况，仍需要另行确认。</p>
+<h2 id="section-4">LabMentor 完成了修改，也留下了失败</h2>
+<p>今天的平台工作分批推进，没有把不同版本的结果拼成一份“通过记录”。下午批次保存了 3859 字的提示词，U1、F17、F18 各测一次。其中 F18 的正文和来源配对通过，但两个引用弹层没有全部验完；U1 和 F17 仍有来源或展示问题，不能据此进入完整十轮。</p>
+<p>晚间继续前，我要求先读原运行，尤其要分清 U1 的后台记录和预览界面。原截图右侧显示的是旧 F18，不能拿它证明 U1 后台成功。随后在正确的 16:26:51 历史运行中确认了 U1 的输入、成功状态和最终文本，但仍缺少当时展示异常的错误详情。</p>
+<p>保留原证据后，执行任务在旧配置下独立诊断了一次 U1，完整回复能够显示。这个结果说明当前这一次没有复现异常，不能解释旧异常的根因，也不能替代原批次缺失的证据。</p>
+<p>之后实施了三处最小替换：收敛 U1 的重复观察说明，把审核限制和适用范围纳入整条回复的引用核查，再统一重复的引用规则。晚间候选、保存后和测试后全文均为 4041 字，摘要一致；模型、检索设置和内容审核保持原配置，自动推荐追问继续关闭。</p>
+<p>正式定向测试仍按三个独立新会话各提交一次，结果如下。</p>
+<table><thead><tr><th>用例</th><th>本批改善</th><th>仍未满足的条件</th></tr></thead><tbody><tr><td>U1 波形判断</td><td>正文、实际引用对应和当前完整展示通过</td><td>根段来源多了括注，未满足“仅列文档名”的严格格式</td></tr><tr><td>F17 电源 CV/CC</td><td>已输出引用能对应实际片段</td><td>必要审核说明与来源遗漏，教师确认的安全条件收窄</td></tr><tr><td>F18 缺型号限流问题</td><td>保留缺证说明和索取型号</td><td>又加入特殊校准内容，范围引用弹层未取得可见证据</td></tr></tbody></table>
+<p>F18 尤其值得继续追踪。它的专门规则在晚间没有改动，但新回答仍把检索片段里的相邻校准内容带进来了。有出处的内容，也可能超出这道题允许回答的范围。</p>
+<p>三项没有全部通过，所以晚间完整十轮执行数保持为 <strong>0/10</strong>。本批没有连续重试挑选答案，也没有发布、入库或修改知识库。完整报告和独立证据 ZIP 已整理，失败记录与历史缺口继续保留。</p>
+<h2 id="section-5">今天留下的实践提醒</h2>
+<p>线性回归需要控制训练与测试的边界，班级材料需要控制统计范围，知识答惑需要同时检查回答内容、真实来源和界面展示。三个任务都要求把结论限定在证据能够支持的范围内。</p>
+<p>接下来需要补齐的事情也比较明确：</p>
+<ul><li>运行线性回归代码，保留损失曲线、实际选出的特征和同一测试集上的指标，再写实验分析。</li><li>核对班集体最终 PPT 与支撑材料是否使用同一口径，并补上本班缺失的明细。</li><li>审核 LabMentor 的下一版最小差异，继续处理 F17 限制证据遗漏、F18 扩写和引用弹层问题；三项定向全部通过后，再启动同一最终配置的十轮。</li></ul>
+<p>今天的项目推进有实际保存和测试，也有明确没有通过的部分。把这些失败写清楚，下一次才能从准确的版本和问题继续。</p></div><footer class="post-footer"><div class="post-tags"><a href="/tags/线性回归/" rel="tag"># 线性回归</a><a href="/tags/梯度下降/" rel="tag"># 梯度下降</a><a href="/tags/LabMentor/" rel="tag"># LabMentor</a><a href="/tags/数据核对/" rel="tag"># 数据核对</a></div><div class="post-nav"><div class="post-nav-item"><a href="/2026/10/20/labmentor-migration-regression/" rel="prev">‹ LabMentor 修复迁移与完整回归：把版本和验收结果对齐</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+  
+  
+  
+
+      
+  
+  
+  
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">先补上昨晚的进展</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">线性回归练习从哪里下手</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">班集体材料先统一统计口径</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">LabMentor 完成了修改，也留下了失败</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">今天留下的实践提醒</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+
