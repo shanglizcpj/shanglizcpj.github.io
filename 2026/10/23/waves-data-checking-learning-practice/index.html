@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>波动概念与数据核对中的学习实践 | 张陈培骥的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/10/23/waves-data-checking-learning-practice/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="波动概念与数据核对中的学习实践">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/10/23/waves-data-checking-learning-practice/">
+<meta name="description" content="波动概念与链表习题讨论、MathorCup A 题选题和数据预处理核对，以及 LabMentor 定向验收与交接记录。">
+<meta property="og:description" content="波动概念与链表习题讨论、MathorCup A 题选题和数据预处理核对，以及 LabMentor 定向验收与交接记录。">
+<meta property="article:published_time" content="2026-10-23T14:00:00Z">
+<meta property="article:modified_time" content="2026-10-23T14:20:00Z">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/10/23/waves-data-checking-learning-practice/"><header class="post-header"><h1 class="post-title" itemprop="name headline">波动概念与数据核对中的学习实践</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-10-23T22:00:00+08:00">2026-10-23</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header><div class="post-body" itemprop="articleBody"><p>日期：2026-10-23（北京时间）</p>
+<p>今天的学习从物理中的几个基础问题展开，晚上又讨论了链表题目和数学建模的数据预处理。LabMentor 则继续推进知识答惑的定向验收：新提示词已经保存，三项测试也实际执行了，但已核对的这一批还没有达到启动十轮回归的条件。</p>
+<h2 id="section-1">从符号含义开始复习波动</h2>
+<p>下午，我围绕波动相关内容连续提问，先确认“lambda 是波长吗”和“I 是什么”，随后又问了传播方向、半波损失，以及什么是波节。</p>
+<p>这些问题看起来比较零散，却暴露出复习时需要补齐的层次：先弄清符号在当前题目中表示什么，再理解图像和条件，最后才是代入公式。只记得一个表达式，碰到传播方向或边界条件变化时，仍可能不知道该从哪里判断。</p>
+<p>今天先把这些疑问逐个提出来，没有把得到讲解直接算成独立解题完成。接下来值得补做的，是挑一道代表题，不看讲解重新写出条件、判断过程和答案，再检查自己卡在哪一步。</p>
+<p>晚上，我还围绕单链表题目继续提问。现阶段这部分先记录为习题讨论，具体哪些题已经独立完成、哪些代码实际运行过，还需要补上自己的解题与测试记录。</p>
+<h2 id="section-2">数学建模先核对数据处理依据</h2>
+<p>晚间的另一条线是 MathorCup 赛题讨论。我针对 A 题的数据预处理决策截图，询问这样处理是否有问题，随后又追问了另一组选择。</p>
+<p>讨论集中在几个具体问题：哪些列是原始尺度，哪些已经取过对数；缺失值是否能从参考表恢复；很小的数值究竟代表真实低值、占位编码，还是检测限以下的替代值。相比直接选一种填补或变换方法，更需要先把每列的数据含义查清楚。</p>
+<p>其中，一个需要保留的待核点是“未检出”的依据。截图中的处理选项不能代替原始说明，也不能仅凭一个人为阈值就宣布某些记录属于未检出。对数变换、缺失值处理和异常值核查，应分别说明依据与用途。</p>
+<p>这次交流还没有独立读取实际数据表，因此截图里的数量、表间差异和处理效果都不能写成已经核实的结果。今晚我已经确定选择 A 题。预处理部分仍停留在方案讨论，选题确定不能代替清洗完成或模型验证。下一步需要的是原始表、字段说明和可复查的处理记录。</p>
+<h2 id="section-3">LabMentor 的进展要分开看</h2>
+<p>项目部分承接昨天的来源与展示问题，但今天有新的实际操作，不能只沿用旧状态。</p>
+<p>根据本轮执行报告，浏览器连接恢复后，任务先核对了平台基线，再实施四处已有最小替换：区分审核依据与适用范围，收敛缺型号限流问题的句式，统一来源格式，并要求根段来源独立列出。保存后与测试后的提示词都为 4393 字，摘要一致。</p>
+<p>随后，电源 CV/CC 问题、缺型号限流问题、共射放大电路波形判断，分别在独立新会话中各提交一次。三项都出现了局部改善，但均未通过完整门槛：</p>
+<ul><li>CV/CC 回答保留了必要安全条件，但所选片段未支持整句中的全部限制，审核补检索也没有取得所需证据。</li><li>限流回答收敛为三句，安全和范围弹层有实际可见的改善，但限制行仍带入了不应展开的校准内容，另一个引用弹层没有显示。</li><li>波形判断保留了必要前提，来源汇总和逐项支持关系仍有缺口，关键弹层也未通过展示检查。</li></ul>
+<p>之后的展示专项进一步缩小了排查范围：正确引用按钮能够被触发，弹层位置有响应，但内容仍为空且不可见。现有证据支持继续检查内容绑定和渲染链路，还不足以确认平台内部的具体根因。</p>
+<p>因此，已核对这一批的结果是完成修改、三项定向测试和展示定位，尚未完成修复验收。该批完整十轮实际执行数为 <strong>0</strong>，不能据此推断交接后所有批次的执行情况。自动推荐追问继续关闭，只作为临时降级；本轮没有发布、入库或修改知识库。</p>
+<p>中午，我要求暂停操作，并让助手整理给 Claude 的接手提示词。交接需要带走当前版本、失败点和启动十轮的门槛，不能只留下“继续修好”的目标。晚间我确认将在 10 月 24 日提供完整验收报告。交接后的实际修改、三项结果和十轮成绩，留待新报告核对，不提前写成通过。</p>
+<h2 id="section-4">今天留下的记录方式</h2>
+<p>把今天的内容放在一起，最值得保留的是检查条件的习惯：物理题先确认符号和题设，数据处理先核对字段含义，智能体验收则要把正文、证据支持、来源条目和可见展示分别检查。</p>
+<p>课程部分还需要用独立解题补验证，建模部分还需要读取实际数据，项目部分则停在明确的失败与交接状态。把这些未完成项写清楚，后续补上结果时，才知道它究竟验证了哪一步。</p></div><footer class="post-footer"><div class="post-tags"><a href="/tags/大学物理/" rel="tag"># 大学物理</a><a href="/tags/数据结构/" rel="tag"># 数据结构</a><a href="/tags/数学建模/" rel="tag"># 数学建模</a><a href="/tags/LabMentor/" rel="tag"># LabMentor</a></div><div class="post-nav"><div class="post-nav-item"><a href="/2026/10/22/linear-regression-labmentor-validation/" rel="prev">‹ 线性回归练习与 LabMentor 验收记录</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+  
+  
+  
+
+      
+  
+  
+  
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">从符号含义开始复习波动</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">数学建模先核对数据处理依据</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">LabMentor 的进展要分开看</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">今天留下的记录方式</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+
