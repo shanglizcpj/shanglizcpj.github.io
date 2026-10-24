@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从相位差到验收条件：把每一步说清楚 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/10/24/phase-difference-acceptance-conditions/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从相位差到验收条件：把每一步说清楚">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/10/24/phase-difference-acceptance-conditions/">
+<meta name="description" content="今天继续看波动相关题目，也在数据结构学习中追问了队列的删除过程。项目这边，LabMentor「知识答惑」的重点从修改回答，进一步转向核对验收结论和整理交付证据。">
+<meta property="og:description" content="今天继续看波动相关题目，也在数据结构学习中追问了队列的删除过程。项目这边，LabMentor「知识答惑」的重点从修改回答，进一步转向核对验收结论和整理交付证据。">
+<meta property="article:published_time" content="2026-10-24T14:00:00Z">
+<meta property="article:modified_time" content="2026-10-24T14:00:00Z">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/10/24/phase-difference-acceptance-conditions/"><header class="post-header"><h1 class="post-title" itemprop="name headline">从相位差到验收条件：把每一步说清楚</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-10-24T22:00:00+08:00">2026-10-24</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header><div class="post-body" itemprop="articleBody"><p>今天继续看波动相关题目，也在数据结构学习中追问了队列的删除过程。项目这边，LabMentor「知识答惑」的重点从修改回答，进一步转向核对验收结论和整理交付证据。</p>
+<p>这几件事看起来不太相关，却都有一个需要放慢的地方：一步推导、一次指针变化或一个“通过”，究竟是在什么条件下成立的？</p>
+<h2 id="section-1">波动题：继续追问符号背后的条件</h2>
+<p>昨天的记录主要围绕波动中的符号和基本概念。今天的问题更具体了：相位差为什么通过做差得到，什么叫反相，以及推导里的“−n”为什么可以换成“m”。</p>
+<p>这些问题提醒我，不能只记住变形后的式子。相位差比较的是两个相位，先要明确比较对象和顺序；交换相减顺序会改变符号，但不能因此把同一个物理关系解释成两个不同结论。判断反相，也需要回到相位关系，而不是只看图像某一刻的高低。</p>
+<p>“−n 换成 m”则涉及变量的取值范围。如果 n 遍历全部整数，令 m=−n 只是重新编号；如果 n 的范围受到限制，就必须同时检查新变量的范围，不能直接照搬。</p>
+<p>这些是今天追问后需要保留的检查点，不等于已经能独立解完所有波动题。后面还需要拿具体题目检验：离开解释，自己能否写清比较条件和每一步变形的依据。</p>
+<h2 id="section-2">队列：把删除过程画出来</h2>
+<p>数据结构部分，我让助手用图示解释队列头指针删除元素的过程。</p>
+<p>相比只看“删除队头”这几个字，图示更适合把操作前后的状态摆在一起。接下来需要检查的，不只是元素少了一个，还包括：头指针原来指向哪里、删除后应该指向哪里，以及最后一个元素被删除时，队尾相关状态是否也需要处理。</p>
+<p>具体处理要以题目采用的队列表示方式为准，不能把一种实现的步骤直接套到另一种实现上。今天的记录能确认我在追问这个过程，还不能据此记成已经完成实现或通过了代码测试。</p>
+<h2 id="section-3">LabMentor：引用可见，不等于整条回答合格</h2>
+<p>项目今天继续处理知识答惑的正文、引用和展示问题。交付材料中保留了提示词差异、实际回答、检索记录和逐项判定，几种结果需要分开看。</p>
+<p>跨日完成的 T 批十轮，复核后是 <strong>6 项通过、4 项失败</strong>。这不是今天新跑的一整批：其中三轮来自前一天，七轮在今天完成。早先更乐观的判定已经撤回，不能继续沿用。</p>
+<p>后续最小修订主要涉及条件与结论的配对、审核和适用范围说明，以及文末来源的汇总方式。修订已经写入，并不意味着生成结果就一定符合要求。U 批五项定向结果为四项失败、一项待核；V 批的 F17 则提供了一个很具体的例子：六处引用及其可见弹层已核对，但正文仍然没有通过。</p>
+<p>问题在于职责的表达。“由教师核对”和“在教师要求下核对”并不完全相同，后者没有把执行责任明确交给教师。引用能打开、能定位到资料，仍然不能代替对整句含义的检查。</p>
+<p>隔离草稿中的检索诊断也没有形成新的通过结果。记录显示界面参数保存后回读不一致，而实际运行参数没有完整暴露，因此只能保留观察到的差异，不能直接断言平台内部的根因，也不能拿这次诊断当作目标配置验收成功。</p>
+<h2 id="section-4">先留下真实状态，再谈下一步</h2>
+<p>今天我明确取消了后续十轮检查，并要求整理完整进度交付包。这个决定只改变了后续安排，不会把已有失败和缺证自动变成通过。</p>
+<p>交付记录已整理成报告、文本证据和截图分包。当前能写下的进展是：已有修改和测试被保留下来，错误判定得到更正，遗留问题有了可继续核查的依据。不能写成知识答惑已经达标，也不能把交付文件等同于发布、入库或 GitHub 提交完成。</p>
+<p>今天的学习和项目记录，都落在一个比较朴素的要求上：不要只保留最后的式子、答案或结论，也要留下它成立的条件。课内学习还需要独立做题验证，项目验收则需要让每个结论对应到实际回答和证据。</p>
+<h3 id="section-5">待补充与确认</h3>
+<ul>
+<li>波动和队列相关题目，哪些已经能够独立完成，哪些仍需要参考解释？</li>
+<li>项目交付后的人工核查或后续修复是否有新结果？在取得记录前，继续保留现有失败与待核状态。</li>
+</ul>
+</div><footer class="post-footer"><div class="post-tags"><a href="/tags/大学物理/" rel="tag"># 大学物理</a><a href="/tags/数据结构/" rel="tag"># 数据结构</a><a href="/tags/LabMentor/" rel="tag"># LabMentor</a><a href="/tags/软件测试/" rel="tag"># 软件测试</a></div><div class="post-nav"><div class="post-nav-item"><a href="/2026/10/23/waves-data-checking-learning-practice/" rel="prev">‹ 波动概念与数据核对中的学习实践</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">波动题：继续追问符号背后的条件</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">队列：把删除过程画出来</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">LabMentor：引用可见，不等于整条回答合格</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">先留下真实状态，再谈下一步</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">待补充与确认</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
