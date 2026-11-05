@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从关系建模到口述材料的准确表达 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/05/relational-modeling-oral-materials/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从关系建模到口述材料的准确表达">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/05/relational-modeling-oral-materials/">
+<meta name="description" content="今天，我从数据库题目中的几条连线，问到了访谈文字的来源，再到 Rust 表达式和神经网络参数。问题看起来分散，却都需要先说明一个对象代表什么，再判断它与其他对象的关系。">
+<meta property="og:description" content="今天，我从数据库题目中的几条连线，问到了访谈文字的来源，再到 Rust 表达式和神经网络参数。问题看起来分散，却都需要先说明一个对象代表什么，再判断它与其他对象的关系。">
+<meta property="article:published_time" content="2026-11-05T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-05T23:40:59Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/05/relational-modeling-oral-materials/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从关系建模到口述材料的准确表达</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-05T22:00:00+08:00">2026-11-05</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天，我从数据库题目中的几条连线，问到了访谈文字的来源，再到 Rust 表达式和神经网络参数。问题看起来分散，却都需要先说明一个对象代表什么，再判断它与其他对象的关系。</p>
+<p>本文按北京时间记录至 11 月 5 日 22:00。以下记录已经提出的问题、可读材料和概念分析；尚未验证的练习结果与文稿内容单独保留。</p>
+<h2 id="section-1">一 注册分店与购买分店，不能只看连线</h2>
+<p>早上的数据库题目围绕一家便利连锁店展开：职工只能在一家分店工作，会员只能在一家分店注册，但注册之后可以在所有分店购买商品。题目要求画出 E-R 图，转换为关系模式，再讨论 BCNF。</p>
+<p>我先要求使用长方形、菱形和椭圆表示实体、联系和属性，随后追问：“分店和购买为什么要连？”又指出题目中没有“类别编号”这一说法，并要求根据自己上传的手绘图转换关系模型。</p>
+<p>这里最关键的区别，是会员的注册地点与某次购买的发生地点。会员编号可以用于确定注册分店，却不能仅凭会员编号确定每次购物所在的分店。若要记录交易发生在哪里，购买联系中的分店信息就有自己的含义。用一个“分店”字段同时代替两种含义，会把业务规则混在一起。</p>
+<p>接着，我问了主码和外码能否重合、什么是超码，以及“分店到会员再到购买没有传递吗”。主码负责唯一标识本关系中的记录，外码负责引用其他关系，两种作用可以落在同一属性上；但组成购买记录的候选码，还需要考虑同一会员重复购买同一商品的情况。</p>
+<p>判断 BCNF 也要落实到函数依赖：在某个关系模式中，每一条非平凡函数依赖的决定因素都必须是超码。E-R 图上能沿线走到另一个实体，并不直接证明存在传递函数依赖。具体怎样分解，仍须先列清字段含义、候选码和业务约束。</p>
+<p>这次讨论已经推进到这些具体问题，但没有足够依据把生成的关系图视为最终正确答案，也没有数据库建表与约束测试记录。</p>
+<h2 id="section-2">二 访谈整理：修订信息，也保留材料性质</h2>
+<p>午后，我请求把一份教师访谈录音整理成普通 Word 文稿。生成稿之后，我又明确要求修正到校年份，并反馈文件无法下载。现有修订文稿可以读到相应修改，整理说明也注明它是方便阅读的问答稿，删减了口头停顿和重复表达，并非逐字稿。</p>
+<p>这里有两件事情需要分别确认：文字是否准确，以及文件能否真正下载和使用。修订文件已经出现，后续下载成功与否仍没有确认；本次记录也没有逐句核听原始音频，所以不把整理后的句子直接作为已经核准的受访者原话。</p>
+<p>另一份材料是校史剧《选择》结束后的公开发言。我在请求转录时明确写了“标明不是专访”，之后又询问它能否体现“国家大事，千万尽力”的杭电精神。</p>
+<p>现有 Word 稿的标题和材料说明均标为公开发言、非专访，并保留了多处“待核”与大致时间。有些涉及同音词、姓名或数字，正式引用前仍应回到录音核对。公开活动发言与针对课程开展的访谈，来源和采集方式不同，应在报告中分别说明。</p>
+<p>今天推进的是素材整理与使用方式的讨论。课程报告是否完成、哪些片段最终采用，以及引用与公开传播的具体范围，都还没有确定。这里也不转载尚未核准的发言内容。</p>
+<h2 id="section-3">三 Rust：最后一个表达式为何没有分号</h2>
+<p>昨天记录了错误传播，今天我继续问到 <code>panic!</code> 与 <code>Result</code>，晚间则把问题落到 trait 和一个具体方法上：</p>
+<pre><code class="language-rust">pub trait Licensed {
+    fn licensing_info(&amp;self) -&gt; String {
+        String::from(&quot;Some information&quot;)
+    }
+}</code></pre>
+<p>我的问题是：“函数内不需要分号吗？”</p>
+<p>这段 trait 为 <code>licensing_info</code> 提供了默认实现。方法要求返回 <code>String</code>，末尾的 <code>String::from(...)</code> 是尾表达式，它的值就是方法的返回值。如果在这一行末尾加上分号，又不另外返回字符串，函数体的结果会成为 <code>()</code>，与声明的返回类型不符。</p>
+<p>因此，分号需要结合语句与表达式的位置理解，不能统一按“每行结尾都加”处理。这是对贴出的代码所做的语义分析，尚没有对应的编译输出或练习通过记录。</p>
+<h2 id="section-4">四 神经网络：从输出概率问到参数更新</h2>
+<p>晚间的另一组问题从前馈网络课件开始。我依次问到 batch size、二分类输出、十分类概率、one-hot、正则项和损失函数，最后追问“调 w 和 b 是什么算法”“梯度的反方向是什么意思”以及反向传播。</p>
+<p>这些概念可以沿计算过程整理：</p>
+<ul>
+<li>网络先根据权重和偏置计算输出。二分类中常用 sigmoid；互斥的多分类问题中常用 softmax 将多个分数归一化。</li>
+<li>one-hot 描述真实类别，损失函数比较预测与标签。对单个 one-hot 标签样本，交叉熵可写为真实类别预测概率的负对数。</li>
+<li>反向传播利用链式法则计算损失对参数的梯度；梯度下降等优化方法再依据梯度更新权重和偏置。</li>
+<li>负梯度是当前位置的局部下降方向，步长仍然重要，不能据此保证每一步都降低损失或找到全局最优解。</li>
+<li>正则项加入额外约束或惩罚，帮助控制模型复杂度。训练损失下降，还要结合验证数据判断泛化表现。</li>
+</ul>
+<p>现有材料是课件与概念追问，没有训练代码、损失曲线或模型评估结果，因此这里只整理计算环节，不记录为已经训练成功。</p>
+<h2 id="section-5">五 待补充的验证</h2>
+<p>这一天的学习记录，可以分别落到几个可检查的问题上：数据库字段是否保留了正确的业务含义，口述材料是否保留了真实来源，Rust 表达式是否满足返回类型，网络训练中又是哪一步负责计算梯度、哪一步负责更新参数。</p>
+<p>接下来可补充的是购买关系的完整候选码与函数依赖、文稿下载和拟引用片段的核听结果，以及 Rust 编译或神经网络计算练习的实际输出。当天可读取的任务记录能确认部分文稿产物存在，但本次未取得足以证明新增代码修改、数据库重跑或测试通过的完整操作证据；这不代表当天没有其他本地操作。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/数据库/" rel="tag"># 数据库</a><a href="/tags/口述史/" rel="tag"># 口述史</a><a href="/tags/Rust/" rel="tag"># Rust</a><a href="/tags/神经网络/" rel="tag"># 神经网络</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/04/rust-errors-experiment-review/" rel="prev">‹ 从 Rust 错误传播到实验材料核对</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 注册分店与购买分店，不能只看连线</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 访谈整理：修订信息，也保留材料性质</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 Rust：最后一个表达式为何没有分号</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 神经网络：从输出概率问到参数更新</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五 待补充的验证</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
