@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从 Rust 错误传播到实验材料核对 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/04/rust-errors-experiment-review/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Rust 错误传播到实验材料核对">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/04/rust-errors-experiment-review/">
+<meta name="description" content="今天的问题从 Rust 中一个表达式会不会修改原值，延伸到函数怎样返回错误。与此同时，我继续调整霍尔实验的打印材料，也提交 SQL 实验报告寻求改进建议。这篇笔记重点记录每一步正在处理的对象，以及哪些结果仍需验证。">
+<meta property="og:description" content="今天的问题从 Rust 中一个表达式会不会修改原值，延伸到函数怎样返回错误。与此同时，我继续调整霍尔实验的打印材料，也提交 SQL 实验报告寻求改进建议。这篇笔记重点记录每一步正在处理的对象，以及哪些结果仍需验证。">
+<meta property="article:published_time" content="2026-11-04T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-05T04:51:27Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/04/rust-errors-experiment-review/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从 Rust 错误传播到实验材料核对</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-04T22:00:00+08:00">2026-11-04</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天的问题从 Rust 中一个表达式会不会修改原值，延伸到函数怎样返回错误。与此同时，我继续调整霍尔实验的打印材料，也提交 SQL 实验报告寻求改进建议。这篇笔记重点记录每一步正在处理的对象，以及哪些结果仍需验证。</p>
+<p>本文按北京时间记录至 11 月 4 日 22:00。代码分析与实验材料审阅不等同于本地运行或最终验收。</p>
+<h2 id="section-1">一 返回新向量和修改原向量</h2>
+<p>早上我问了 Rust 非引用传值与 Copy 类型能否借用，随后贴出 <code>v.iter().map(|element| element * 2).collect()</code>，追问“这个不是可以进行改变吗”。</p>
+<p>在这段函数中，<code>v</code> 是对向量的共享引用；<code>iter()</code> 遍历元素的引用，<code>map</code> 为每个元素计算新值，<code>collect()</code> 把结果收集成新的 <code>Vec&lt;i32&gt;</code> 并返回。这里的数字变大，是新向量中的值发生变化，不表示原向量被原地修改。是否改变原数据，要看访问方式和实际执行的操作，而不能只看表达式里出现了乘法。</p>
+<p>这是一段代码阅读笔记；目前没有对应的本地运行输出或练习通过反馈。</p>
+<h2 id="section-2">二 从 Result 到错误传播</h2>
+<p>晚上我继续追问 <code>error</code>、<code>match</code> 与 <code>?</code> 的关系，也贴出了返回 <code>Result&lt;(), ParseIntError&gt;</code> 的 <code>main</code>。<code>Result&lt;T, E&gt;</code> 用 <code>Ok(T)</code> 表示成功、<code>Err(E)</code> 表示错误；<code>match</code> 可以分别处理两个分支。对于返回 <code>Result</code> 的表达式，<code>?</code> 在成功时取出内部值继续执行，出错时提前返回，并在需要且存在相应转换时转换错误类型。<a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html" target="_blank" rel="noopener noreferrer">Rust 官方教程</a>对这些路径有说明。</p>
+<p>随后我贴出 <code>errors5.rs</code>，其中既有字符串解析，也有正数校验，两处都可能返回错误。我问为什么返回类型使用 <code>Box&lt;dyn error::Error&gt;</code>，又追问 <code>impl</code> 的含义。这个类型为不同的、满足相应条件并可转换的错误提供共同的返回形式；<code>Error</code> 本身是描述错误行为的 trait，具体类型的实现仍需满足相应要求，可对照<a href="https://doc.rust-lang.org/std/error/trait.Error.html" target="_blank" rel="noopener noreferrer">标准库文档</a>。</p>
+<p>练习代码仍标有未完成提示，现有记录没有编译和测试结果，因此这里只整理问题与语义，不写成已经通过。</p>
+<h2 id="section-3">三 霍尔表格与曲线：尺寸和读数都要核对</h2>
+<p>接着昨天的材料整理，今天我反馈两个 PDF 都无法加载，并进一步明确尺寸：表格宽度与图宽合计为 12 厘米，表格和图的高度保持一致，同时表内保留原始读数和计算结果。</p>
+<p>新生成文件的说明写的是每张曲线图外框宽 12 厘米，这与我要求的“表加图总宽”并不完全一致，需要重新测量确认。文件中还标出表三两处涂改读数采用了推定值，须回到原始记录核对。目前没有最终下载、打印或验收确认。</p>
+<p>这次调整把问题从“图小一点”变成了可以检查的具体条件：总宽怎样计算、表图如何对齐、原始数据是否保留，以及不清楚的数字如何标明。</p>
+<h2 id="section-4">四 SQL 报告中的一条审阅意见</h2>
+<p>今天我上传 SQL 实验报告，请求检查问题和提出改进建议。审阅中有一个具体例子：报告提到 18 条成绩，而对应查询使用聚合函数且没有 <code>GROUP BY</code>。这里需要区分参与计算的输入记录数量，与查询返回的汇总结果行数。</p>
+<p>报告本身记载了数据库环境和运行过程，但本次审阅没有重新连接本机执行。关于外键条件、别名范围等内容也只是审阅意见；是否修改报告并重新验证，还没有确认。</p>
+<h2 id="section-5">五 待补充</h2>
+<p>今天的共同问题是：变化发生在哪里，结果又能证明什么。Rust 中需要区分新值与原值、成功值与错误；实验材料中需要区分文件生成与尺寸、读数核对；报告中则需要区分数据行数与结果行数。</p>
+<p>待补充的是 Rust 练习的实际编译输出、霍尔表三两处原始读数和新版打印尺寸，以及 SQL 报告是否修改并重新执行。本次未取得可证明当天本地 Codex 修改或测试通过的记录，不据此断言当天没有其他操作。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/Rust/" rel="tag"># Rust</a><a href="/tags/数据库/" rel="tag"># 数据库</a><a href="/tags/物理实验/" rel="tag"># 物理实验</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/03/hall-voltage-experiment-curves/" rel="prev">‹ 从霍尔电压换向到实验曲线整理</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 返回新向量和修改原向量</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 从 Result 到错误传播</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 霍尔表格与曲线：尺寸和读数都要核对</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 SQL 报告中的一条审阅意见</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五 待补充</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

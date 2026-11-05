@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从分类实验到物理错题核对 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/10/30/classification-physics-checking/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从分类实验到物理错题核对">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/10/30/classification-physics-checking/">
+<meta name="description" content="今天的学习记录从一份 Wine 分类实验材料开始，随后转到波动光学和大学物理实验作业核对。分类代码需要看清训练与评价的顺序，物理题需要回到条件和判分反馈。这里先记录能够核对的过程，不把代码中的训练语句当成已经完成的运行，也不把一次回答当成最终订正结果。">
+<meta property="og:description" content="今天的学习记录从一份 Wine 分类实验材料开始，随后转到波动光学和大学物理实验作业核对。分类代码需要看清训练与评价的顺序，物理题需要回到条件和判分反馈。这里先记录能够核对的过程，不把代码中的训练语句当成已经完成的运行，也不把一次回答当成最终订正结果。">
+<meta property="article:published_time" content="2026-10-30T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-05T04:51:27Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/10/30/classification-physics-checking/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从分类实验到物理错题核对</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-10-30T22:00:00+08:00">2026-10-30</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天的学习记录从一份 Wine 分类实验材料开始，随后转到波动光学和大学物理实验作业核对。分类代码需要看清训练与评价的顺序，物理题需要回到条件和判分反馈。这里先记录能够核对的过程，不把代码中的训练语句当成已经完成的运行，也不把一次回答当成最终订正结果。</p>
+<p>本文按北京时间整理至 10 月 30 日 22:00。项目部分另补记前一晚常规截止时间之后的论文构建变更。</p>
+<h2 id="section-1">一 Wine 分类材料中的训练与评价顺序</h2>
+<p>上午，我把一份葡萄酒分类项目的说明和代码发到对话里。材料使用 Wine 数据集的 13 项化学特征，将样本分为三个类别，模型采用支持向量分类器 SVC。</p>
+<p>这份材料已经给出了较完整的流程：加载数据、检查缺失与重复、划分训练集和测试集、标准化、训练模型，最后输出混淆矩阵和分类指标。这里能够确认的是我提交了这份材料；现有记录没有实际运行输出，因此暂不填写准确率、支持向量数量或不同核函数的优劣。</p>
+<p>代码中值得单独留下的是预处理顺序。它先按 7∶3 分层划分数据，固定随机种子 42，再让标准化器只在训练集上计算均值和标准差。测试集使用同一组参数转换，而不是重新拟合标准化器。这样，测试集不会通过预处理提前参与训练。</p>
+<p>模型配置为 RBF 核、C=1.0、gamma=&quot;scale&quot;。这些参数说明了当前实验设置，但不能仅凭代码结构判断训练效果。检查阶段还需要对应的预测输出和真实标签。</p>
+<h2 id="section-2">二 比较核函数时 测试集承担什么角色</h2>
+<p>材料末尾的思考题要求保持划分和标准化方法一致，把核函数换成 linear、poly 和 sigmoid，再与 RBF 比较。它还追问：如果根据这份测试集的结果选择核函数，再用同一份测试集报告最终效果，会有什么问题？</p>
+<p>这道问题可以作为实验记录的重点。测试集一旦参与模型选择，它就不再只是最后的独立检查。较合适的设计是把选择过程放在训练数据内部，通过验证集或交叉验证比较候选，确定模型后再使用预留测试集。交叉验证中的标准化也应在各训练折内拟合。</p>
+<p>评价时还要区分不同指标。混淆矩阵能够指出哪一类被误判到另一类；宏平均让各类别权重相同，加权平均则按各类样本数汇总。只摘出一个总准确率，会丢掉具体的误分类信息。</p>
+<p>以上是围绕现有材料整理的实验方法笔记。各核函数的实际结果、运行环境，以及我对思考题的独立回答，仍需补入。</p>
+<h2 id="section-3">三 物理学习从提问继续到错题反馈</h2>
+<p>下午的物理讨论涉及波速、相位差和双缝干涉。我在介质相关问题中追问“相对介电系数一般大于一吗”，之后又上传了相位差和条纹移动题的图片。</p>
+<p>这类提问需要保留公式使用的条件。介质参数、传播路径和题目所问的量，应当先对应清楚，再代入计算。今天先把这些作为正在梳理的知识点，不写成已经独立完成整组推导。</p>
+<p>傍晚，我提出核对大学物理实验作业：20 题中有三题错误，希望找出并修正；随后又补发了“这是现在的结果”。可读取的判分截图文字仍显示错误项，涉及千分尺读数和不确定度表达，说明核对过程不能停留在第一轮建议。</p>
+<p>这部分暂不在博客中列出最终错题编号和答案。原题、当前选择、判分结果及修改理由需要逐项对齐；没有最后一次完整反馈，就不把这次作业记成全部订正通过。比只保存答案字母更有用的，是保留每次修改所依据的题意和证据。</p>
+<h2 id="section-4">四 项目补记</h2>
+<p>前一晚 22:09，MathorCup 项目出现了新的论文与构建改动，晚于上一篇草稿的截止时间。这一轮主要处理新正文与旧源码附录怎样一起生成，以及公式和编号的排版。</p>
+<p>构建工具新增了冻结附录复用路径：从既有文档中保留附录的原生结构和引用样式，复制有关文件时核对哈希，并阻止覆盖原交付文件。公式排版则把原生公式与编号放在同一行的双列表格中，保留公式节点并检查编号顺序。这些实现已经存在于提交中，不只是修改建议；它们属于项目的辅助开发记录，不写成我逐行独立完成的代码。</p>
+<p>该版本的验收记录报告了 199 项冻结数值检查和 11 项定向测试通过。本轮没有完成 Windows/Word 渲染、全套 CI 等效检查或科学实验重跑，重建还依赖未随分支提供的冻结包和字体配置。昨天记录的 Windows 316 项测试及正式批准对应旧提交，不能直接覆盖这次新增改动。本次整理时，新版本仍未合并，也未见对应的新正式复评。</p>
+<p>今天我还询问了 OceanBase 数据库大赛的初赛晋级条件。这里先记录问题本身，不把历届规则当成本届已核实的名额，也不据此判断是否晋级。现有可读取记录没有提供今天新完成数据库优化的证据，因此不重复前几日的调优过程和成绩。</p>
+<h2 id="section-5">五 今天留下的记录与待确认项</h2>
+<p>今天可以串起来的一点，是让结果始终对应具体步骤。分类实验要说清哪些数据用于选择模型，物理作业要对照修改后的反馈，项目测试则要标明验证的版本。记录这些条件，之后才容易解释一个结果是怎样得到的。</p>
+<p>还需要补齐两项学习材料：</p>
+<ul>
+<li>Wine 实验是否已经运行，实际混淆矩阵和各核函数比较结果是什么。</li>
+<li>物理实验作业最后仍错在哪几题，最终采用的订正理由与判分反馈是否一致。</li>
+</ul>
+<p>这些内容确认后，再把今天的材料整理接到自己的实际运行和解题过程上。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/机器学习/" rel="tag"># 机器学习</a><a href="/tags/SVM/" rel="tag"># SVM</a><a href="/tags/大学物理/" rel="tag"># 大学物理</a><a href="/tags/工程验证/" rel="tag"># 工程验证</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/10/29/defense-materials-reproducible-package/" rel="prev">‹ 从答辩材料到论文支撑包：把验证范围说清楚</a></div><div class="post-nav-item"><a href="/2026/10/31/rust-experiment-paper-delivery/" rel="next">从 Rust 运行入口到实验与论文交付 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 Wine 分类材料中的训练与评价顺序</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 比较核函数时 测试集承担什么角色</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 物理学习从提问继续到错题反馈</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 项目补记</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五 今天留下的记录与待确认项</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

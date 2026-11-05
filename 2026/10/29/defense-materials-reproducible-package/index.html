@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从答辩材料到论文支撑包：把验证范围说清楚 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/10/29/defense-materials-reproducible-package/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从答辩材料到论文支撑包：把验证范围说清楚">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/10/29/defense-materials-reproducible-package/">
+<meta name="description" content="今天的记录围绕两件事展开：数据库课程答辩材料的重新生成，以及 MathorCup 论文支撑包的工程复评。它们都涉及同一个具体问题：交付了一份文件之后，哪些内容已经验证，哪些还需要继续检查？">
+<meta property="og:description" content="今天的记录围绕两件事展开：数据库课程答辩材料的重新生成，以及 MathorCup 论文支撑包的工程复评。它们都涉及同一个具体问题：交付了一份文件之后，哪些内容已经验证，哪些还需要继续检查？">
+<meta property="article:published_time" content="2026-10-29T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-05T04:51:27Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/10/29/defense-materials-reproducible-package/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从答辩材料到论文支撑包：把验证范围说清楚</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-10-29T22:00:00+08:00">2026-10-29</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天的记录围绕两件事展开：数据库课程答辩材料的重新生成，以及 MathorCup 论文支撑包的工程复评。它们都涉及同一个具体问题：交付了一份文件之后，哪些内容已经验证，哪些还需要继续检查？</p>
+<p>本文按北京时间整理至 10 月 29 日 22:00。前日晚间新增的答辩准备单独注明；工程测试数字来自留存的评审记录，不写成我独立执行了所有开发和测试。</p>
+<h2 id="section-1">一 从实验报告转向口头说明</h2>
+<p>10 月 28 日 23:20，我提出准备数据库设计的讲解稿和问答；23:39，又提出为数据库内核与向量检索综合实验准备讲稿和问答。这部分发生在上一篇日记的常规截止时间之后，作为前日晚间的补充记录。</p>
+<p>今天 08:13，我反馈生成的文档打不开，要求重新生成。随后留存的新版材料包含约五分钟讲稿、35 道问答和速记卡。能确认的是材料已经重新生成；是否在我的设备上打开成功、是否已经练习讲述，还需要补充，不能把文件交付直接写成答辩准备完成。</p>
+<p>这份材料依据的是 10 月 12 日编制的课程实验报告，并非今天新完成的实验，也不是昨日 OceanBase 数据库大赛全文检索优化的新成绩。</p>
+<h2 id="section-2">二 答辩时要解释指标究竟在比较什么</h2>
+<p>这份课程报告里，值得继续梳理的是近邻一致性与语义相关性的区别。</p>
+<p>报告中的中文小样本包含 20 个问题。ANN Recall@5 为 1.000，表示返回的近似邻居与精确计算的前五个邻居一致；人工评价的 Hit@1 却只有 0.750。检索忠实地找到了向量空间里的近邻，并不保证排在第一位的内容能回答问题。</p>
+<p>离线 RRF 融合也有类似的边界。报告记录 MRR 从 0.850 提高到 0.967，但 Recall@5 从 1.000 降至 0.975。首个相关文档排得更靠前，不代表所有相关证据都更容易进入前五名。这还是固定小样本上的离线比较，不能写成已经在 seekdb 中部署了在线融合功能。</p>
+<p>把这些差别放进讲稿，能让回答具体到“参照是什么、评价单位是什么、结果能支持到哪里”。正常关闭后能够重新打开数据库，也只能支持对应生命周期下的数据保持，不能替代强杀或掉电后的恢复验证。这些是本次材料整理中保留下来的解释边界，尚不代表我已经能脱稿回答所有问题。</p>
+<h2 id="section-3">三 仓库测试通过之后 还要检查导出的包</h2>
+<p>MathorCup 今天的新增进展集中在论文支撑包。上一篇记录的是共同评价版本的复评与合并；这一轮检查的是最终候选导出后能否按说明使用，两者不能混为同一次验收。</p>
+<p>早期评审发现两类问题：一类是支撑包缺少 Q2 保存结果重建所需的依赖文件，即使补入规定的官方输入仍无法重建；另一类是文本读取依赖系统默认编码，在 Windows 默认 CP936 环境下失败。对应修复补齐了打包依赖，并明确文本读取的 UTF-8 编码。</p>
+<p>这两项修复通过后，又暴露出匿名化带来的来源校验问题。源码中的显示信息发生变化后，文件字节和哈希随之改变，但部分仍在使用的 Q2、Q3 来源清单继续记录旧哈希。仓库中的原文件可以通过检查，不等于匿名导出包也能通过。</p>
+<p>修复保留了来源校验：先核对原研究文件与原契约，再根据实际导出字节更新有关依赖记录，同时保留历史映射。评审还做了反向检查——向导出的预处理源码追加注释后，相关读取入口仍然拒绝通过；恢复原字节后再通过。正常输入能运行、被改动的输入会被拒绝，两方面证据需要一起看。</p>
+<h2 id="section-4">四 最后一个失败来自换行比较口径</h2>
+<p>随后 Windows 复评中，316 项测试通过了 315 项，唯一失败出在新增交付测试。生产逻辑按 LF 规范化后的内容计算签名，测试却拿 CRLF 原始字节计算预期值，双方比较的不是同一种字节表示。</p>
+<p>最新修改针对测试预期和夹具，分别覆盖 LF 与 CRLF。签名按既定规范化规则比较；源码清单和数值证据仍保留对原始导出字节的精确校验，没有放宽生产完整性检查。</p>
+<p>19:24 的正式复评报告记录：在 Windows、Python 3.12.7、默认 CP936 且未开启 UTF-8 模式的环境中，4 项定向测试和全部 316 项单元测试通过；重新打包、全新解压后的完整性检查也通过。以上是评审者报告的验证结果，本次博客整理没有重新执行测试。</p>
+<p>这轮没有再次进行 Q2、Q3 结果重建或 PDF 渲染，未变化的内容沿用上一轮证据。当前候选已获得工程批准，但 PR 仍未合并；论文科学内容的人工确认、AI 使用记录核对、签署和实际提交回执，也不能由工程批准自动代替。</p>
+<h2 id="section-5">五 留下的收获与待确认事项</h2>
+<p>今天这两条线索让我可以把“验证”拆得更具体：文档内容存在，要继续确认文件能打开、讲述能完成；仓库测试通过，要继续检查打包、匿名化和跨平台检出之后的实际产物。每一步回答的问题不同，完成状态也应分别记录。</p>
+<p>接下来还需要补齐：</p>
+<ul>
+<li>新版答辩材料是否能够正常打开，实际讲述时最难解释的是哪一部分。</li>
+<li>MathorCup 最终采用的候选版本，以及人工审阅、签署和正式提交的确认。</li>
+<li>今天是否还有未进入可读取记录的学习过程、推导或本地验证结果。</li>
+</ul>
+<p>先把现有证据和缺口记清楚，再补上自己的实际使用与判断。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/数据库/" rel="tag"># 数据库</a><a href="/tags/MathorCup/" rel="tag"># MathorCup</a><a href="/tags/可复现性/" rel="tag"># 可复现性</a><a href="/tags/工程验证/" rel="tag"># 工程验证</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/10/28/probability-density-oceanbase-practice/" rel="prev">‹ 从概率密度到 OceanBase 赛题实践</a></div><div class="post-nav-item"><a href="/2026/10/30/classification-physics-checking/" rel="next">从分类实验到物理错题核对 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 从实验报告转向口头说明</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 答辩时要解释指标究竟在比较什么</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 仓库测试通过之后 还要检查导出的包</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 最后一个失败来自换行比较口径</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五 留下的收获与待确认事项</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

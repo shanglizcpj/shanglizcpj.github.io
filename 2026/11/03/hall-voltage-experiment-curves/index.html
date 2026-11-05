@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从霍尔电压换向到实验曲线整理 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/03/hall-voltage-experiment-curves/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从霍尔电压换向到实验曲线整理">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/03/hall-voltage-experiment-curves/">
+<meta name="description" content="今天围绕霍尔电压实验，我先追问了测量原理和电流方向，随后整理实验数据对应的曲线。一个问题是如何判断测量时的正负方向，另一个问题是怎样把表格和图放在一起，让后续核对更方便。">
+<meta property="og:description" content="今天围绕霍尔电压实验，我先追问了测量原理和电流方向，随后整理实验数据对应的曲线。一个问题是如何判断测量时的正负方向，另一个问题是怎样把表格和图放在一起，让后续核对更方便。">
+<meta property="article:published_time" content="2026-11-03T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-05T04:51:27Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/03/hall-voltage-experiment-curves/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从霍尔电压换向到实验曲线整理</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-03T22:00:00+08:00">2026-11-03</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天围绕霍尔电压实验，我先追问了测量原理和电流方向，随后整理实验数据对应的曲线。一个问题是如何判断测量时的正负方向，另一个问题是怎样把表格和图放在一起，让后续核对更方便。</p>
+<p>本文按北京时间记录至 11 月 3 日 22:00。以下区分提问、生成文件和实际验证，尚未确认的内容保留到文末。</p>
+<h2 id="section-1">一 先弄清换向表示什么</h2>
+<p>今天我问了霍尔电压的测量原理，也追问“怎么是双正”“按钮按下是正还是负”，并再次询问是否确定。可见我关注的不只是公式，还有仪器的方向标记与实际操作之间怎样对应。</p>
+<p>理解这类实验时，至少要分清样品中的工作电流、产生磁场的励磁电流，以及所测电压的正负方向。改变不同电流的方向，会改变测量条件；记录数据时，需要把每一次的开关状态和读数对应起来。</p>
+<p>具体到实验仪器，按钮按下对应哪一个方向，仍应以仪器标识、实验指导书和接线为准。仅凭这次提问，不能把某个按钮方向写成已经核实的结论，也不能把四次读数的符号关系当成已经完成的测量结果。</p>
+<h2 id="section-2">二 从曲线大小调整到表图对应</h2>
+<p>我先请求计算三组数据，再按照提供的数据绘制适合裁剪粘贴的曲线，并要求标出具体数据。曲线整理过程中，我反馈过上一版图太大。之后继续提出：表一对应图一、表二对应图二、表三对应图三，整体不要太大，并要求生成 PDF。助手随后给出了文件链接。</p>
+<p>这种调整的重点是让数据和图能放在一起核对：每张表对应哪条关系、横纵轴表示什么、单位和刻度是否与原始数据一致，都比单纯把曲线画出来更重要。</p>
+<p>此前的一份小尺寸 PDF 中包含三张图，分别呈现霍尔电压与工作电流、霍尔电压与励磁电流，以及磁场与位置之间的关系。后来又提出表图一一配对的新要求。最新版本的实际内容、数据一致性和打印效果仍待核对，因此这里先记录整理过程，不把生成链接当作已经验收或打印完成。</p>
+<h2 id="section-3">三 前日晚间补记：准备访谈提纲</h2>
+<p>11 月 2 日晚，我说明选择了第六个实践主题，计划采访老师完成口述史报告，并请求拟写询问时间的话。11 月 3 日上午，我进一步要求制作发给老师的采访问题表，再整理成可下载的 Word，并突出第 5、6、9 题。</p>
+<p>这部分目前可以确认的是准备材料和提出格式要求；文件是否成功下载、是否已经发送，以及老师是否同意采访，都还没有确认。访谈时间和实际内容也需要后续补充。</p>
+<h2 id="section-4">四 收获与待确认事项</h2>
+<p>今天的实验记录提醒我把“仪器状态、原始数据、处理图表”连接起来：先确认正负方向，再检查每组读数的对应关系，最后核对图上的变量、刻度和单位。曲线的尺寸和排版也要服务于后续阅读与记录。</p>
+<p>接下来需要补充仪器按钮方向的依据、原始数据与三张图的逐项核对，以及最新 PDF 是否能正常下载和打印。访谈材料则需要确认文件格式和后续沟通情况。</p>
+<p>本次尚未取得可证明当天新增 Codex 文件修改、命令执行和测试结果的记录，不能据此判断当天是否进行过其他本地操作。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/物理实验/" rel="tag"># 物理实验</a><a href="/tags/霍尔效应/" rel="tag"># 霍尔效应</a><a href="/tags/数据整理/" rel="tag"># 数据整理</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/02/sql-crosstalk-local-coding/" rel="prev">‹ 从 SQL 筛选到串音消除与本地编程排障</a></div><div class="post-nav-item"><a href="/2026/11/04/rust-errors-experiment-review/" rel="next">从 Rust 错误传播到实验材料核对 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 先弄清换向表示什么</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 从曲线大小调整到表图对应</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 前日晚间补记：准备访谈提纲</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 收获与待确认事项</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
