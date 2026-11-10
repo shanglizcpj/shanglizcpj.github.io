@@ -198,7 +198,7 @@ Rc::clone(&amp;sun)   // 新增一个指向原有 Sun 的 Rc</code></pre>
 <ol><li>看智能指针时，先确认共享或拥有的是哪份数据，再沿着创建、克隆、修改和销毁操作判断状态。</li><li>看 SQL 连接时，先确认每行能够匹配哪些记录，再判断未匹配行是否保留，最后看输出哪些列。</li></ol>
 <p>这次的 <code>rc1.rs</code> 修复和 <code>cow1.rs</code> 练习已经完成。本文保留了提问时的代码问题与概念整理，未附最终代码和具体测试输出，因此不列测试数量或运行耗时。SQL 原题的完整数据和实际执行输出仍待补充，上面的简化例子只用于说明连接规则。</p></div>
 <footer class="post-footer"><div class="post-tags"><a href="/tags/Rust/" rel="tag"># Rust</a><a href="/tags/智能指针/" rel="tag"># 智能指针</a><a href="/tags/SQL/" rel="tag"># SQL</a><a href="/tags/连接查询/" rel="tag"># 连接查询</a></div>
-<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/08/oscilloscope-experiment-topic/" rel="prev">‹ 实验主题核对：示波器的使用</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/08/oscilloscope-experiment-topic/" rel="prev">‹ 实验主题核对：示波器的使用</a></div><div class="post-nav-item"><a href="/2026/11/10/rust-threads-macros/" rel="next">Rust 线程与宏：共享状态、等待完成和作用域 ›</a></div></div></footer></article>
 
 
 
@@ -374,4 +374,5 @@ Rc::clone(&amp;sun)   // 新增一个指向原有 Sun 的 Rc</code></pre>
 
 </body>
 </html>
+
 
