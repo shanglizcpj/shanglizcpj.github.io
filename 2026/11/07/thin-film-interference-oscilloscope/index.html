@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从薄膜干涉到示波器预习 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/07/thin-film-interference-oscilloscope/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从薄膜干涉到示波器预习">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/07/thin-film-interference-oscilloscope/">
+<meta name="description" content="今天的学习讨论主要围绕大学物理展开。下午是一组薄膜干涉、牛顿环、劈尖和迈克尔孙干涉仪题目；晚上则根据教材照片和参考材料，整理“示波器的使用”实验的预习部分。">
+<meta property="og:description" content="今天的学习讨论主要围绕大学物理展开。下午是一组薄膜干涉、牛顿环、劈尖和迈克尔孙干涉仪题目；晚上则根据教材照片和参考材料，整理“示波器的使用”实验的预习部分。">
+<meta property="article:published_time" content="2026-11-07T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-12T01:45:21Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/07/thin-film-interference-oscilloscope/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从薄膜干涉到示波器预习</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-07T22:00:00+08:00">2026-11-07</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天的学习讨论主要围绕大学物理展开。下午是一组薄膜干涉、牛顿环、劈尖和迈克尔孙干涉仪题目；晚上则根据教材照片和参考材料，整理“示波器的使用”实验的预习部分。</p>
+<p>本文记录至北京时间 11 月 7 日 22:00。题目分析与预习整理是今天能够确认的内容，实际测量、报告填写和提交情况暂未确认。</p>
+<h2 id="section-1">一 从“2π 除以波长”问起</h2>
+<p>下午，我在薄膜干涉的讨论中追问：“2pi除lamada0是什么意思？”</p>
+<p>这里的 <code>2π/λ₀</code> 是真空波数，通常记作 <code>k₀</code>。一束光传播一个真空波长，对应的相位变化是 <code>2π</code>；因此，已知两束光的光程差 <code>ΔL</code>，就可以用下面的关系换成传播造成的相位差：</p>
+<p><code>Δφ传播 = (2π/λ₀) × ΔL</code></p>
+<p>这一步首先需要分清几种量。几何路程是实际走过的距离；在均匀介质中，光程等于折射率乘以几何路程；相位差则描述两束波相差多少个振动周期。</p>
+<p>例如，光在折射率为 <code>n</code>、厚度为 <code>d</code> 的薄膜中垂直往返一次，增加的膜内光程是 <code>2nd</code>。若题目给的是某种介质中的波长 <code>λ₁</code>，就要先明确它与真空波长的关系 <code>λ₀ = n₁λ₁</code>，不能把不同定义的波长混在同一个公式里。</p>
+<h2 id="section-2">二 反射时的相位变化要另外判断</h2>
+<p>今天的题图既有空气中的薄膜，也有夹在不同介质之间的薄膜，还有以孔雀羽毛结构色为背景的简化模型。外观相似的题目，反射光是否增强，取决于具体的折射率排列和所比较的两束光。</p>
+<p>在题目采用的理想透明介质、近于垂直入射条件下，光从低折射率一侧射向高折射率界面时，反射会产生 <code>π</code> 的相位突变，通常称为半波损失。比较两束反射光时，要看两次反射之间的相对差别：</p>
+<ul>
+<li>只有其中一次发生这种相位突变时，需要计入额外的 <code>π</code>。</li>
+<li>两次都发生，或两次都不发生时，反射带来的相对相位差为零，按 <code>2π</code> 周期理解。</li>
+</ul>
+<p>因此，总相位差需要把传播部分和反射部分合在一起。判断相长还是相消之前，先画清光路、标出各层折射率，再确定比较的是哪两束光，会比直接套用“明纹公式”更稳妥。</p>
+<p>羽毛结构色题还给出了忽略部分层厚影响的简化假设。这样的计算属于题目模型，不能直接推广为真实多层结构的完整光学结论。</p>
+<h2 id="section-3">三 牛顿环与劈尖：把厚度写进几何关系</h2>
+<p>接下来的题目把光程差与薄膜几何联系起来。</p>
+<p>牛顿环的一道题在透镜和平板之间保留了初始间隙。距离中心 <code>r</code> 处的膜厚，在小厚度近似下可写为：</p>
+<p><code>e(r) ≈ e₀ + r²/(2R)</code></p>
+<p>其中 <code>e₀</code> 是中心间隙，<code>R</code> 是透镜曲率半径。中心没有接触时，不能继续把 <code>e₀</code> 当作零；明暗环条件也要结合介质和反射相位重新判断。</p>
+<p>劈尖则把厚度变化转化为位置变化。小夹角 <code>θ</code> 下，可以近似写成 <code>e(x) ≈ xθ</code>。相邻同类条纹对应的膜厚差为 <code>λ₀/(2n)</code>，从而得到条纹间距：</p>
+<p><code>Δx ≈ λ₀/(2nθ)</code></p>
+<p>这也说明了为什么更换劈尖内的介质会改变条纹间距。至于棱边是明纹还是暗纹，仍要回到两束反射光的相位关系，不能把空气劈尖的常见结论套给所有折射率组合。</p>
+<h2 id="section-4">四 迈克尔孙干涉仪中的“往返两次”</h2>
+<p>最后一张题图给出：在迈克尔孙干涉仪的一臂中垂直放入折射率为 <code>1.4</code> 的薄膜，波长为 <code>589 nm</code> 的光产生的条纹移动了 7 条，求膜厚。</p>
+<p>这里薄膜替代的是同样厚度的空气，而且光会往返通过薄膜，所以新增光程差是：</p>
+<p><code>ΔL = 2(n − 1)d</code></p>
+<p>每移动一条条纹，对应一个波长的光程差变化，于是：</p>
+<p><code>2(n − 1)d = 7λ₀</code></p>
+<p>代入题目数值，得到 <code>d ≈ 5.15 μm</code>。</p>
+<p>这个结果来自题设下的计算。式子中的 <code>n − 1</code> 表示相对空气增加的光程，前面的 2 来自往返传播，两者各有具体含义。它不是一次实际测量记录，也不能据此说明整组题目已经提交或全部掌握。</p>
+<h2 id="section-5">五 示波器预习：按教材整理，也区分参考材料</h2>
+<p>晚上，我上传了“示波器的使用”教材页、手写参考和空白报告页，请求：“结合这几张图帮我完成空白部分的填写。”</p>
+<p>空白页需要整理五个部分：实验目的、实验原理、实验仪器及器材、注意事项、实验内容。教材的主线包括观察波形、测量交流电压与时间间隔，以及利用李萨如图形比较频率。</p>
+<p>其中，读数与量纲可以对应起来：</p>
+<ul>
+<li>波形峰峰值占据的纵向格数乘以电压档位，得到峰峰电压。</li>
+<li>一个完整周期占据的横向格数乘以时间档位，得到周期。</li>
+<li>频率是周期的倒数。</li>
+<li>在 X-Y 模式下，两个方向分别输入正弦信号，可观察李萨如图形；频率比的计算要先统一教材中切点数的定义。</li>
+</ul>
+<p>教材中的 <code>0.72 V</code>、<code>2.0 ms</code> 和 <code>500 Hz</code> 是示例计算，正式记录仍应填写现场读数。仪器型号、规格和精度也需要根据实际设备补充。</p>
+<p>这组参考材料还有一处需要分开处理：一页手写材料混入了“驻波法测声速”的器材和步骤，不能整页当作本次示波器实验的内容照搬。预习稿应以本次实验教材和实际要求为准。</p>
+<p>目前能够确认的是，我已提供材料并请求整理填写内容；还没有后续证据说明空白页已经手写完成，或已经开展实验、获得测量结果。</p>
+<h2 id="section-6">六 今天留下的具体问题</h2>
+<p>今天的内容可以沿着一条线串起来：先明确物理量的含义，再核对公式成立的条件，最后区分题设数值、教材示例与实际测量。</p>
+<p>光学题里的波长属于哪种介质、反射相位怎样变化、光路是否往返，都会改变计算。示波器预习则需要继续落实仪器信息、读数方法和材料范围。这里先保留这些讨论与整理记录，等有了实际结果，再补上测量、填写和验证的部分。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/大学物理/" rel="tag"># 大学物理</a><a href="/tags/薄膜干涉/" rel="tag"># 薄膜干涉</a><a href="/tags/示波器/" rel="tag"># 示波器</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/06/rust-references-decision-tree-interview/" rel="prev">‹ Rust 引用、决策树与采访采纳稿</a></div><div class="post-nav-item"><a href="/2026/11/08/oscilloscope-experiment-topic/" rel="next">实验主题核对：示波器的使用 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 从“2π 除以波长”问起</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 反射时的相位变化要另外判断</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 牛顿环与劈尖：把厚度写进几何关系</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 迈克尔孙干涉仪中的“往返两次”</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五 示波器预习：按教材整理，也区分参考材料</span></a></li><li class="nav-item"><a class="nav-link" href="#section-6"><span class="nav-text">六 今天留下的具体问题</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+

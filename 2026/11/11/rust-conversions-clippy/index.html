@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Rust 转换与 Clippy：把类型、错误和检查结果分开看 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/11/rust-conversions-clippy/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust 转换与 Clippy：把类型、错误和检查结果分开看">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/11/rust-conversions-clippy/">
+<meta name="description" content="昨天整理了线程和宏，今天继续做 Rustlings 的 Clippy 与类型转换练习。问题集中在几处：`if let` 和 `for` 有什么区别，`AsMut&lt;u32&gt;` 到底约束了什么，`.into()` 怎样确定目标类型，以及 `return` 和末尾表达式什么时候可以互换。">
+<meta property="og:description" content="昨天整理了线程和宏，今天继续做 Rustlings 的 Clippy 与类型转换练习。问题集中在几处：`if let` 和 `for` 有什么区别，`AsMut&lt;u32&gt;` 到底约束了什么，`.into()` 怎样确定目标类型，以及 `return` 和末尾表达式什么时候可以互换。">
+<meta property="article:published_time" content="2026-11-11T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-12T01:45:21Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/11/rust-conversions-clippy/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">Rust 转换与 Clippy：把类型、错误和检查结果分开看</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-11T22:00:00+08:00">2026-11-11</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>昨天整理了线程和宏，今天继续做 Rustlings 的 Clippy 与类型转换练习。问题集中在几处：<code>if let</code> 和 <code>for</code> 有什么区别，<code>AsMut&lt;u32&gt;</code> 到底约束了什么，<code>.into()</code> 怎样确定目标类型，以及 <code>return</code> 和末尾表达式什么时候可以互换。</p>
+<p>当天两次提交分别修改了 3 道 Clippy 练习和 5 道转换练习。结合代码差异和自动检查日志，这篇笔记记录具体改动，也把数据库实验报告里容易混淆的两种“提升”单独记下来。</p>
+<h2 id="section-1">一、<code>if let</code> 表达的是一次匹配</h2>
+<p><code>clippy2.rs</code> 原来通过 <code>for</code> 处理一个 <code>Option</code>，当天改成了：</p>
+<pre><code class="language-rust">let mut res = 42;
+let option = Some(12);
+if let Some(x) = option {
+    res += x;
+}</code></pre>
+<p>这里尝试把 <code>option</code> 匹配为 <code>Some(x)</code>，成功时取出里面的值，执行一次代码块；遇到 <code>None</code> 就跳过。对应检查实际输出了 <code>54</code>。</p>
+<p><code>Option</code> 实现了 <code>IntoIterator</code>，所以 <code>for x in option</code> 本身有意义：<code>Some</code> 迭代一次，<code>None</code> 迭代零次。不过，只想处理“有值”这个分支时，<code>if let</code> 更直接。当前 Rust 的 <code>for_loops_over_fallibles</code> 是编译器默认警告，不能把在 <code>cargo clippy</code> 中看到的这类提示都归为 Clippy 独有规则。<a href="https://doc.rust-lang.org/rustc/lints/listing/warn-by-default.html#for-loops-over-fallibles" target="_blank" rel="noopener noreferrer">rustc 文档</a>解释了这项检查。</p>
+<p>另外两题也不是单纯调整格式：</p>
+<ul>
+<li><code>clippy1.rs</code> 用 <code>f32::consts::PI</code> 替代手写的 <code>3.14f32</code>。</li>
+<li><code>clippy3.rs</code> 去掉了“确认是 <code>None</code> 后再 <code>unwrap()</code>”的错误路径，改为匹配 <code>Some</code>；在负数数组中补上逗号，避免相邻负数被解析成减法；先保存向量，再调用 <code>clear()</code>，避免把 <code>resize()</code> 的单位返回值误当成向量。</li>
+<li>交换两个变量时，改用 <code>std::mem::swap(&amp;mut value_a, &amp;mut value_b)</code>。原先连续写 <code>a = b; b = a;</code> 会在第一步丢失旧的 <code>a</code>。</li>
+</ul>
+<p>修改后的第三题在自动检查中打印了六个负数、空向量，以及 <code>value a: 66; value b: 45</code>。这些输出和修改目的能够逐项对应。</p>
+<h2 id="section-2">二、<code>AsRef</code>、<code>AsMut</code> 得到的是引用</h2>
+<p>我问过：<code>AsMut&lt;u32&gt;</code> 是不是“获取特定类型的可变量”，能不能获取所有类型？从当天的函数签名看，会更清楚：</p>
+<pre><code class="language-rust">fn num_sq&lt;T: AsMut&lt;u32&gt;&gt;(arg: &amp;mut T) {
+    let num = arg.as_mut();
+    *num = (*num) * (*num);
+}</code></pre>
+<p><code>T: AsMut&lt;u32&gt;</code> 要求传入类型能够提供 <code>&amp;mut u32</code>。<code>arg.as_mut()</code> 得到的 <code>num</code> 是可变引用，<code>*num</code> 才是引用指向的数值。它没有生成任意类型的新变量，也不是给任何类型都开放的转换。</p>
+<p>这道题用 <code>Box&lt;u32&gt;</code> 测试：盒子里原来是 <code>3</code>，调用后断言为 <code>9</code>。不能据此推出普通 <code>u32</code> 或所有包装类型都自动满足 <code>AsMut&lt;u32&gt;</code>，是否可用仍取决于具体实现。<a href="https://doc.rust-lang.org/std/convert/trait.AsMut.html" target="_blank" rel="noopener noreferrer">AsMut 文档</a>也专门说明，并不存在覆盖所有类型的自反实现。</p>
+<p>同一文件的两个计数函数补上了 <code>T: AsRef&lt;str&gt;</code>：先通过 <code>arg.as_ref()</code> 得到 <code>&amp;str</code>，再分别统计字节数和 <code>chars()</code> 数量。这里的 <a href="https://doc.rust-lang.org/std/primitive.str.html#method.chars" target="_blank" rel="noopener noreferrer">`chars()`</a> 数的是 Unicode 标量值，不应直接当成用户看到的所有“字符簇”。借用转换的含义可参考 <a href="https://doc.rust-lang.org/std/convert/trait.AsRef.html" target="_blank" rel="noopener noreferrer">AsRef 文档</a>。</p>
+<h2 id="section-3">三、<code>.into()</code> 依赖目标类型，也依赖已有实现</h2>
+<p>今天比较的两段 <code>Person</code> 代码，一段使用 <code>if let Ok(age)</code>，另一段使用 <code>match</code>；一段写 <code>name.into()</code>，另一段写 <code>name.to_string()</code>。</p>
+<p>在这道练习中，<code>Person.name</code> 是 <code>String</code>，上下文能够确定 <code>.into()</code> 的目标类型，因此这两种构造名字的写法得到相同内容。但 <code>.into()</code> 并不是“根据上下文随意变成任何东西”：源类型与目标类型之间必须存在对应转换实现。实现 <code>From&lt;T&gt; for U</code> 后，标准库会提供相应的 <code>Into&lt;U&gt; for T</code>。<a href="https://doc.rust-lang.org/std/convert/trait.From.html" target="_blank" rel="noopener noreferrer">From 文档</a>给出了这层关系。</p>
+<p>当天实际提交保留了分步检查与 <code>if let</code> 的版本：</p>
+<ol><li>按逗号拆分，字段数量不是两个就返回默认值。</li><li>名字为空就返回默认值。</li><li>将年龄解析为 <code>usize</code>，成功时构造 <code>Person</code>，失败时返回默认值。</li></ol>
+<p>两段代码在这套规则下行为一致，不需要把“换成 <code>match</code>”理解为一次功能修复。</p>
+<h3><code>return</code> 能不能省略，要看所在位置</h3>
+<p>函数前半段的检查需要立即结束函数：</p>
+<pre><code class="language-rust">if parts.len() != 2 {
+    return Person::default();
+}</code></pre>
+<p>而作为函数最后一个表达式的 <code>if let ... else ...</code>，可以直接把分支值作为函数结果。此时分支末尾的 <code>Person::default()</code> 不加分号即可。</p>
+<p>不能把前面的提前返回直接改成 <code>Person::default();</code>。这样只会创建并丢弃一个值，程序还会往下走，后续索引就可能越界。<a href="https://doc.rust-lang.org/reference/expressions/return-expr.html" target="_blank" rel="noopener noreferrer">Rust Reference</a>明确区分了 <code>return</code> 的控制流作用。</p>
+<p>这道 <code>From&lt;&amp;str&gt;</code> 练习按题意用默认值兜底，但业务代码可能需要知道输入为什么无效。当天另一个 <code>FromStr</code> 实现就保留了空输入、字段数量、缺少名字和年龄解析错误。选择接口时，是否需要向调用者报告失败，比写法长短更重要。</p>
+<h2 id="section-4">四、<code>TryFrom</code> 把失败放进返回值</h2>
+<p><code>try_from_into.rs</code> 把元组、数组和切片转换为 RGB 颜色。目标通道类型是 <code>u8</code>，因此每个输入都必须位于 <code>0..=255</code>。</p>
+<p>核心语句是：</p>
+<pre><code class="language-rust">let red = u8::try_from(tuple.0)
+    .map_err(|_| IntoColorError::IntConversion)?;</code></pre>
+<p>这里包含三个动作：尝试把 <code>i16</code> 转为 <code>u8</code>；把转换错误映射为本题的错误类型；成功时取出数值，失败时通过 <code>?</code> 提前返回。<code>map_err</code> 只处理错误分支，成功值保持不变。对应语义可查 <a href="https://doc.rust-lang.org/std/convert/trait.TryFrom.html" target="_blank" rel="noopener noreferrer">TryFrom</a> 和 <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.map_err" target="_blank" rel="noopener noreferrer">Result::map_err</a>。</p>
+<p>三种输入的检查责任不同：</p>
+<ul>
+<li>元组 <code>(i16, i16, i16)</code> 的元素个数已由类型确定，逐个检查数值范围。</li>
+<li>数组 <code>[i16; 3]</code> 的长度也在类型中确定。当天实现把它转成元组，复用已有的转换逻辑。</li>
+<li>切片 <code>&amp;[i16]</code> 的长度在运行时才能知道，必须先检查 <code>slice.len() != 3</code>，再访问前三项。</li>
+</ul>
+<p>当天提交中的切片实现保留了三次显式数值转换，并没有改成复用元组实现。后者可以作为后续重构方向，但不能把讲解时提出的简化建议记成已经提交的代码。</p>
+<p>测试中的 <code>(-1, 255, 255)</code> 也值得注意：三个数之和并不能说明颜色合法，必须分别检查每个通道。14 个测试覆盖了三种输入的正常值、正负越界，以及切片过长和过短。</p>
+<h2 id="section-5">五、这次具体通过了什么</h2>
+<p>11 月 11 日晚，提交 <code>2c3a1ff</code> 对应的课程检查使用 Rust <code>1.98.1</code>。原始日志记录了：</p>
+<ul>
+<li><code>clippy1</code>、<code>clippy2</code>、<code>clippy3</code> 均成功运行，退出状态为 <code>0</code>。</li>
+<li><code>using_as</code>：1 个测试通过。</li>
+<li><code>from_into</code>：11 个测试通过。</li>
+<li><code>from_str</code>：10 个测试通过。</li>
+<li><code>try_from_into</code>：14 个测试通过。</li>
+<li><code>as_ref_mut</code>：5 个测试通过。</li>
+</ul>
+<p>五道转换练习合计 41 个测试通过。课程总成绩从昨天的 <code>90/110</code> 变成了 <code>98/110</code>，仍有 12 道练习未通过。本次未通过的是 <code>quiz2</code>、<code>quiz3</code> 和 <code>algorithm1</code> 至 <code>algorithm10</code>。</p>
+<p>因此，整条评分工作流仍显示 <code>failure</code>，失败发生在标记未完成练习的步骤。这与今天八道练习通过检查并不矛盾，也不代表整个仓库已经没有警告或未完成内容。</p>
+<h2 id="section-6">六、数据库实验里，也要拆开看“提升”</h2>
+<p>今天还梳理了向量数据库的打包优化。方案只在解码后能恢复完全相同的 float32 位模式时使用小数打包，否则保留原表示。这种回退设计和 Rust 转换练习有相通之处：先明确什么输入可以转换，失败时保留明确的处理路径。</p>
+<h3>无损要求会影响压缩率</h3>
+<p>当天的四位小数实验保留了一次预测偏差：实际结果与预测相差 <code>12,288</code> 字节。记录中的更正解释，原先误以为解析器会把 <code>-0.0</code> 变成 <code>+0.0</code>，实际上保留了符号，因此部分向量需要回退到 float32 表示。</p>
+<p>这里要求的是位模式一致，不能因为正零和负零数值比较相等，就认为任意替换都符合约定。保留错误预测与后续修正，也比用已知结果重写预测更有价值。</p>
+<h3>二十轮对照仍未证明读写双加速</h3>
+<p>早期报告中的八轮 A/B，写入耗时为 <code>0.811 → 0.816</code> 秒，查询耗时为 <code>0.304 → 0.301</code> 秒。它比较的是两个候选版本，不能据此宣称超过目标基线。我当天明确提出的目标仍是“两种速度都加快”。</p>
+<p>后续保存的实验记录在运行前规定了 20 轮随机顺序测试，以及一个具体成功条件：写入、查询耗时比的 95% 区间必须同时低于 <code>1</code>。其中 A 是旧基线，D 是包含打包与紧凑排序的组合候选。确认实验中的 D/A 比值为：</p>
+<ul>
+<li>写入：<code>0.986</code>，区间 <code>[0.967, 1.044]</code>。</li>
+<li>查询：<code>1.025</code>，区间 <code>[0.984, 1.046]</code>。</li>
+</ul>
+<p>两个区间都跨过 <code>1</code>，因此这组实验尚未证明 D 相对 A 双加速。随后把精确求和设为默认得到 D2，另做了十轮 D2 与 D 的比较，时间差异也未超出噪声。这里没有 D2 对 A 的同组确认结果，不能把前一组区间套在后一个版本上。</p>
+<p>减少写入字节数和内存占用有价值，但不能替代耗时目标。这些数字来自当天保存的测试日志，不是撰写本文时重新运行所得，也不是新的平台正式成绩。</p>
+<h3>内存上限与匿名内存不能混写</h3>
+<p>另一个实验在 <code>32 MiB</code> 限制下排序 30 万行，早期运行被 OOM 杀死。缩小排序状态后，保存的日志显示正确返回 30 万行、退出码为 <code>0</code>，并通过 2,468 条 ORDER BY 差分检查。</p>
+<p>不过，报告中的 <code>17.5 MiB</code> 对应匿名内存峰值，容器整体的 <code>memory.peak</code> 仍是 <code>32.0 MiB</code>。如果只摘出前一个数字，就会误把局部指标当成整个容器的峰值。此次能写下的是特定测试通过，以及内存构成需要分开观察，不能据此保证任意数据规模都不会 OOM。</p>
+<h2 id="section-7">七、rCore 的学习位置</h2>
+<p>今天也问了 rCore 与 ROS、操作系统之间的关系。对我目前的学习而言，先区分层次就够了：rCore 是通过实现内核学习操作系统，<a href="https://github.com/ros2/ros2" target="_blank" rel="noopener noreferrer">ROS</a> 面向机器人软件开发，二者的学习内容不能因名字相近而混在一起。</p>
+<p><a href="https://rcore-os.cn/rCore-Tutorial-Book-v3/" target="_blank" rel="noopener noreferrer">rCore 教材</a>从执行环境、特权级和任务切换，继续讲到地址空间、进程与文件系统。今天的主要可验证进展仍是 Rust 基础练习，尚不能据此写成完成了新的内核实验。</p>
+<p>回头看，今天最具体的收获是能把几组相似概念拆开：匹配与迭代，引用转换与值转换，默认值与错误返回，某组测试通过与整个项目完成。数据库的耗时和容量指标也一样，需要分别对应到实际证据。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/Rust/" rel="tag"># Rust</a><a href="/tags/Rustlings/" rel="tag"># Rustlings</a><a href="/tags/Clippy/" rel="tag"># Clippy</a><a href="/tags/类型转换/" rel="tag"># 类型转换</a><a href="/tags/测试/" rel="tag"># 测试</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/10/rust-threads-macros/" rel="prev">‹ Rust 线程与宏：共享状态、等待完成和作用域</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一、`if let` 表达的是一次匹配</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二、`AsRef`、`AsMut` 得到的是引用</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三、`.into()` 依赖目标类型，也依赖已有实现</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四、`TryFrom` 把失败放进返回值</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五、这次具体通过了什么</span></a></li><li class="nav-item"><a class="nav-link" href="#section-6"><span class="nav-text">六、数据库实验里，也要拆开看“提升”</span></a></li><li class="nav-item"><a class="nav-link" href="#section-7"><span class="nav-text">七、rCore 的学习位置</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+

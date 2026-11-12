@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Rust 引用、决策树与采访采纳稿 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/06/rust-references-decision-tree-interview/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust 引用、决策树与采访采纳稿">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/06/rust-references-decision-tree-interview/">
+<meta name="description" content="今天的讨论主要分成三部分：继续理解 Rust 中引用与构建过程的规则，分析决策树为什么可能偏爱没有预测价值的特征，以及把一份教师采访材料整理成有明确采纳范围的文稿。">
+<meta property="og:description" content="今天的讨论主要分成三部分：继续理解 Rust 中引用与构建过程的规则，分析决策树为什么可能偏爱没有预测价值的特征，以及把一份教师采访材料整理成有明确采纳范围的文稿。">
+<meta property="article:published_time" content="2026-11-06T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-12T01:45:21Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/06/rust-references-decision-tree-interview/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">Rust 引用、决策树与采访采纳稿</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-06T22:00:00+08:00">2026-11-06</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天的讨论主要分成三部分：继续理解 Rust 中引用与构建过程的规则，分析决策树为什么可能偏爱没有预测价值的特征，以及把一份教师采访材料整理成有明确采纳范围的文稿。</p>
+<p>本文按北京时间记录至 11 月 6 日 22:00。代码部分记录问题和语义分析，文稿部分记录已经生成并可读取的材料；实际运行、逐句核听和提交情况仍分别说明。</p>
+<h2 id="section-1">一 生命周期标注能说明什么</h2>
+<p>早上，我继续追问 <code>longest</code> 函数的生命周期。一个问题是：如果较短作用域里的字符串已经销毁，即使函数写了生命周期标注，外面再使用返回的引用是不是仍然会报错？另一个问题是，这样的声明是否意味着两个参数实际存活得一样久：</p>
+<pre><code class="language-rust">fn longest&lt;&#x27;a&gt;(x: &amp;&#x27;a str, y: &amp;&#x27;a str) -&gt; &amp;&#x27;a str</code></pre>
+<p>这里的 <code>&#x27;a</code> 描述输入引用与返回引用之间的有效期约束。两个输入都需要在选定的 <code>&#x27;a</code> 期间有效，返回值也只能在相应范围内使用；两个字符串实际创建和销毁的时间可以不同。</p>
+<p>如果函数可能返回内部作用域中 <code>string2</code> 的引用，而调用者在 <code>string2</code> 被销毁后才打印结果，这个用法仍然不满足借用检查。给函数加上标注，不会使原字符串延长存活，也不会让已经失效的数据重新有效。</p>
+<p>这次追问把问题落实到了一个具体边界：函数签名说明引用之间的关系，调用位置还必须满足这些关系。现有记录中没有对应的编译器输出，所以这里只分析代码，不记作已经运行通过的练习。</p>
+<h2 id="section-2">二 从构建脚本到迭代器</h2>
+<p>下午，我贴出 Rustlings 的一段 <code>build.rs</code>，其中涉及 <code>tests7</code> 和 <code>tests8</code>。代码通过标准输出向 Cargo 传递两类信息：</p>
+<pre><code class="language-text">cargo:rustc-env=TEST_FOO=...
+cargo:rustc-check-cfg=cfg(feature, values(&quot;pass&quot;))
+cargo:rustc-cfg=feature=&quot;pass&quot;</code></pre>
+<p>第一条为编译项目设置 <code>TEST_FOO</code> 环境变量，示例使用当前时间戳作为值。后两条需要分清：<code>rustc-check-cfg</code> 声明允许检查的配置名称和值，<code>rustc-cfg</code> 才设置对应的条件编译标记。</p>
+<p>在这道练习的代码里，输出 <code>feature=&quot;pass&quot;</code> 会影响匹配该条件的代码是否参与编译。但直接设置这个标记，不等于完整启用了 Cargo 清单里的同名 feature，更不能由此推断相关依赖也已启用。</p>
+<p>接着，我又问了水果向量后面的 <code>.iter()</code>：</p>
+<pre><code class="language-rust">let my_fav_fruits =
+    vec![&quot;banana&quot;, &quot;custard apple&quot;, &quot;avocado&quot;, &quot;peach&quot;, &quot;raspberry&quot;];
+let mut my_iterable_fav_fruits = my_fav_fruits.iter();</code></pre>
+<p><code>.iter()</code> 创建按共享引用访问元素的迭代器，不取走向量里元素的所有权。这里元素本身是 <code>&amp;str</code>，迭代器产出的元素类型因此是 <code>&amp;&amp;str</code>；调用 <code>.next()</code> 时，则会得到相应的 <code>Option</code>。</p>
+<p>变量前的 <code>mut</code> 允许迭代器推进自己的位置，并不意味着可以借此修改原向量里的元素。借用、所有权和迭代状态分别承担不同作用。</p>
+<p>这些内容仍是对所贴代码的解释。助手对命令写法的判断，不能代替 Cargo 构建结果或 Rustlings 的通过记录。</p>
+<h2 id="section-3">三 信息增益为什么会偏爱独立编号</h2>
+<p>上午的一张决策树题目照片给出了两个特征：每个用户独有的编号，以及分成高、中、低三档的月收入。任务是预测用户是否购买某商品，问题则是 ID3 的信息增益会怎样评价这两个特征。</p>
+<p>如果训练集中每个样本的编号都不同，按编号划分便可以把每个样本放进单独的叶节点。每个节点只有一种标签，划分后的条件熵为零；信息增益因而可以达到划分前数据集的熵。</p>
+<p>这解释了题目中 B 选项的含义：一个缺乏实际预测意义的编号，也可能得到很高的信息增益。ID3 根据这个数值选择特征时，并不会自动理解“编号只是标识”。至于收入特征，不能仅凭“收入与购买力有关”的直觉，就断言它的信息增益一定更大。</p>
+<p>我随后追问：“决策树基尼指数是什么东西？”</p>
+<p>基尼不纯度可以写为 <code>1 − Σpₖ²</code>，其中 <code>pₖ</code> 是当前节点中第 k 类样本的比例。节点只有一种类别时，该值为零；二分类且两类各占一半时，为 0.5。比较候选划分时，还要按各子节点的样本量加权，而不是只挑一个最纯的小节点来看。</p>
+<p>这组问题把“训练样本被分得很纯”和“模型能预测新样本”区分开了。真正评价泛化表现，还需要独立验证数据。今天可核到的是题目与概念追问，没有新的决策树训练、测试指标或作业得分记录。</p>
+<h2 id="section-4">四 采访材料：正文采纳与原稿留存</h2>
+<p>下午，我询问：如果采访对象是在杭电任教二十多年的教师，原来的提纲是否需要调整。随后请求生成新版 Word。</p>
+<p>新提纲保留十二个问题，分别围绕初到学校的经历、教学与育人故事、学校变化、精神传承和未来寄语展开。它把较长时间跨度中的具体经历放进问题里，为后续追问提供线索。提纲中的建议时长和访谈形式属于准备方案，不能据此推断实际采访怎样进行。</p>
+<p>之后，我提供了一段教师采访录音，请求整理成文字稿，又要求生成 Word。晚间进一步提出了三个明确要求：润色部分语言；第九问中的批判性部分不予采纳；采纳稿附录包含本轮编辑前的原文，主题围绕杭电精神。</p>
+<p>现在可读取的文件已经把这些层次分开：</p>
+<ul>
+<li>正文保留十个问答主题，合并部分追问，整理重复口头语和句式。</li>
+<li>导语、结语和采纳说明标为编者文字，避免混入受访者回答。</li>
+<li>第九问注明节选范围，正文保留英语学习、专业表达与对外交流相关内容。</li>
+<li>附录留存编辑前的文字稿及待核标记，供回查语境。</li>
+</ul>
+<p>其中，“附录原文”指的是上一版录音转写整理稿，本身已经删减过部分口头重复，并不等于逐字录音。正文也明确说明，时间范围用于回查，不表示润色后的回答是连续的原话。</p>
+<p>这次已经有了可读取的采纳稿，原稿留存与正文删节也有相应说明。不过，文件生成并不证明每句话都已核听，也不证明受访者已审阅、课程报告已提交或材料已获准公开。本文只记录整理过程，不转载未经核准的访谈语句，也不把附录视为可直接公开的材料。</p>
+<h2 id="section-5">五 留下可以继续核验的记录</h2>
+<p>今天的代码问题落在引用有效期、编译配置和迭代方式上；决策树题目提醒我区分划分指标与泛化表现；采访材料则推进到了正文采纳、编者说明和原稿附录的分层整理。</p>
+<p>接下来若补充实际结果，最有用的是 Rust 编译或练习通过记录，以及采访拟引用片段的核听和确认情况。可读取的记录已经能说明今天讨论了什么、生成了哪些材料，但还不足以把这些进展统一写成“练习完成”或“报告定稿”。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/Rust/" rel="tag"># Rust</a><a href="/tags/决策树/" rel="tag"># 决策树</a><a href="/tags/口述史/" rel="tag"># 口述史</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/05/relational-modeling-oral-materials/" rel="prev">‹ 从关系建模到口述材料的准确表达</a></div><div class="post-nav-item"><a href="/2026/11/07/thin-film-interference-oscilloscope/" rel="next">从薄膜干涉到示波器预习 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一 生命周期标注能说明什么</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二 从构建脚本到迭代器</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三 信息增益为什么会偏爱独立编号</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四 采访材料：正文采纳与原稿留存</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">五 留下可以继续核验的记录</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
