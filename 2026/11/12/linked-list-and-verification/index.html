@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>链表合并与数据库实验：读懂代码，再看验证 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/12/linked-list-and-verification/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表合并与数据库实验：读懂代码，再看验证">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/12/linked-list-and-verification/">
+<meta name="description" content="今天继续看 Rust 链表，也问了梯度下降、反向传播和数据库性能方面的问题。几个问题都很具体：`as_ref().val` 访问的是什么，为什么需要 `unsafe`，反向传播如何参与参数更新，以及相同引擎为什么会出现不同的运行耗时。">
+<meta property="og:description" content="今天继续看 Rust 链表，也问了梯度下降、反向传播和数据库性能方面的问题。几个问题都很具体：`as_ref().val` 访问的是什么，为什么需要 `unsafe`，反向传播如何参与参数更新，以及相同引擎为什么会出现不同的运行耗时。">
+<meta property="article:published_time" content="2026-11-12T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-15T14:54:53Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/12/linked-list-and-verification/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">链表合并与数据库实验：读懂代码，再看验证</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-12T22:00:00+08:00">2026-11-12</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><blockquote><p>本文记录截至当日 22:00（北京时间）的情况，后续进展见之后的日志。</p></blockquote>
+<p>今天继续看 Rust 链表，也问了梯度下降、反向传播和数据库性能方面的问题。几个问题都很具体：<code>as_ref().val</code> 访问的是什么，为什么需要 <code>unsafe</code>，反向传播如何参与参数更新，以及相同引擎为什么会出现不同的运行耗时。</p>
+<p>这篇记录先整理代码和概念，再回到 MiniVectorDB 当天留下的实现与测试日志。代码解释、候选实现、本地测试和平台结果，需要分别记清楚。</p>
+<h2 id="section-1">一、链表合并：先看指针，再看连接顺序</h2>
+<p>今天我贴出了一份链表练习和一段 <code>merge</code> 实现，请求逐步讲解。节点里有 <code>val</code>，以及类型为 <code>Option&lt;NonNull&lt;Node&lt;T&gt;&gt;&gt;</code> 的 <code>next</code>；链表保存头指针、尾指针和长度。</p>
+<p>与逐个复制数值到新节点的写法不同，这段实现复用原来的节点，调整它们之间的连接。</p>
+<h3><code>as_ref().val</code> 是两步操作</h3>
+<p>看到下面的比较时，我又问了 <code>as_ref</code> 和 <code>val</code> 的含义：</p>
+<pre><code class="language-rust">a_ptr.as_ref().val &lt;= b_ptr.as_ref().val</code></pre>
+<p>这里的 <code>a_ptr</code> 是 <code>NonNull&lt;Node&lt;T&gt;&gt;</code>。调用它的 <code>as_ref()</code> 得到节点的共享引用，再通过 <code>.val</code> 访问节点中保存的值，比较的是两个值的大小。</p>
+<p>昨天接触过 <code>AsRef</code> 这个借用转换 trait。今天虽然也出现了 <code>as_ref</code>，接收者却是 <code>NonNull</code>，调用的是它自身的方法。读代码时只认方法名还不够，要先确认左边对象的类型。</p>
+<h3>为什么这里需要 <code>unsafe</code></h3>
+<p><code>NonNull</code> 保证指针非空，但非空指针仍可能悬空。调用 <code>as_ref()</code> 前，还要保证指向的对象有效、已初始化、正确对齐，并满足引用的生命周期和别名规则；通过 <code>as_mut()</code> 修改节点时，也要满足可变引用的要求。标准库将这些方法标记为 <code>unsafe</code>，要求调用方保证指针能够合法转换为引用。<a href="https://doc.rust-lang.org/std/ptr/struct.NonNull.html#method.as_ref" target="_blank" rel="noopener noreferrer">NonNull 文档</a></p>
+<p>因此，写上 <code>unsafe { ... }</code> 不会自动消除风险。继续检查这段链表时，需要追问：节点由谁分配、何时释放，合并过程中有没有别的引用仍在访问它，原链表和新链表最终由谁负责回收节点。</p>
+<h3>合并过程里，顺序很重要</h3>
+<p>这段代码的主要步骤是：</p>
+<ol><li>用 <code>a</code>、<code>b</code> 分别指向两条链表当前还没有处理的节点。</li><li>两边都有节点时，比较当前值，选出较小的节点。</li><li>先保存该节点原来的后继，让对应游标向后移动，再把选中节点的 <code>next</code> 断开。</li><li>把选中节点接到结果链表尾部，并更新尾指针。第一次加入节点时，同时设置头指针。</li><li>一条链表处理完后，把另一条的剩余部分接上，更新尾指针和总长度。</li></ol>
+<p>第三步尤其值得单独看：如果先清空 <code>next</code>，再试图沿它向后走，就会丢失后续节点的入口。维护头尾指针时，也必须照顾空链表的情况。</p>
+<p>在两条输入链表都已排序、节点归属和指针有效性满足要求的前提下，这种合并方式最多依次处理两条链表中的节点，时间复杂度为 <code>O(m+n)</code>，不需要为每个元素重新分配节点。</p>
+<p>目前这部分能确认的是代码阅读和提问，还没有可核对的当天提交或编译测试结果。空链表、重复值、全部元素落在同一侧等情况，以及节点释放逻辑，仍应放进后续检查。</p>
+<h2 id="section-2">二、反向传播负责求梯度，优化器决定怎样更新</h2>
+<p>神经网络方面，我从“梯度下降的作用”问起，接着问了 MSE、CE，以及反向传播是不是可以用来求梯度下降需要的偏导数。</p>
+<p>可以先把一次训练中的职责分开：</p>
+<ul>
+<li><strong>损失函数</strong>衡量预测与目标的差异。MSE 是均方误差，常见于回归；CE 是交叉熵，常见于分类。</li>
+<li><strong>反向传播</strong>利用链式法则，计算损失对各层参数的梯度。</li>
+<li><strong>优化器</strong>根据梯度及自身规则更新参数。普通梯度下降的形式是 <code>θ ← θ − η∇L(θ)</code>，其中 <code>η</code> 是学习率。</li>
+</ul>
+<p>这样理解，“用反向传播求偏导”这个方向是对的，但求出梯度之后，还要由具体更新规则决定怎么走。学习率、数据和模型都会影响训练，损失在一次更新后是否下降，也需要看实际情况。</p>
+<p>今天上传的另一张材料提到了权重空间编程：让大模型直接读取、修改另一个网络的权重。原作者把它描述为早期实验，其中一些任务不通过梯度下降进行权重编辑。<a href="https://rikiyat.github.io/blog/weight-space-programming/" target="_blank" rel="noopener noreferrer">Weight-Space Programming 原文</a></p>
+<p>这给基础概念提供了一个对照：参数可以通过不同机制发生变化，评价效果仍要依靠明确的任务和实验。这部分目前是概念学习，没有自己的训练或复现实验结果，也不能据此判断反向传播已经失去价值。</p>
+<h2 id="section-3">三、数据库实验：没有通过的方案，也要留下结果</h2>
+<p>上午我问过一个性能问题：引擎源码完全一样，为什么运行速度能差这么多？随后又追问，新版代码是不是可能有多余内容。</p>
+<p>单看代码长短，无法判断性能。比较版本时，至少要核对实际构建出的程序、输入数据、资源限制和运行方式，再看重复运行的分布。当天截图中的两组耗时报告还缺少与之对应的原始跑分日志，所以这里不直接据此排列版本优劣。</p>
+<p>当天 MiniVectorDB 的本地文件则保留了另一轮较完整的实验过程。</p>
+<h3>自适应自旋没有通过验收</h3>
+<p>首先尝试的是标准输入等待相关的自旋策略。已有日志里，ADAPT、B1000、B5000 三个候选最终都没有通过预设验收条件。其中 B1000 在一个中负载场景中比更优基线慢约 13%，超过了允许的退化门槛。</p>
+<p>因此，这一方向应记为“尝试后未通过验收”。只挑出有改善的场景，会漏掉决定是否保留改动的退化项。</p>
+<h3>后续候选只移植日志无损打包</h3>
+<p>随后留下的候选集中在日志无损打包，本地源码中已有 <code>vecpack.h</code> 及相关存储、引擎文件。项目记录限定了这次移植的范围，没有把此前其他分支的距离求和、排序等改动一并带入。</p>
+<p>正确性方面，当天保存的执行日志包括：</p>
+<ul>
+<li>33,005 个向量的按位往返检查，多个编译及检测配置通过；</li>
+<li>协议测试、日志输出对比和查询差分检查通过；</li>
+<li>包含重启、强制终止后恢复的测试；</li>
+<li>在 128 MiB 限制下加载 300,000 行，恢复后核对通过。</li>
+</ul>
+<p>移植过程中还保留了一个旧分支的失败用例：恢复后的查询错误地返回空行，而参考结果应有两行。后续候选的记录显示，这个回归用例通过了检查。它说明测试覆盖了这个具体问题，不能据此推断所有持久化问题都已解决。</p>
+<p>以上是当天已有日志记录的运行结果，并非整理这篇文章时重新运行的测试。</p>
+<h3>主要收益落在 I/O 和内存</h3>
+<p>候选 P 与基线 A 做了两组各 12 轮的本地配对比较。完整精度数据和 6 位小数数据的答案摘要分别一致；每组实验中，写入与查询统计的 I/O 字节量都下降，内存指标也下降。</p>
+<p>不过，耗时结果还不足以支持“稳定提速”。例如，完整精度数据的写入耗时比 <code>P/A</code> 为 <code>0.966</code>，95% 区间为 <code>[0.938, 1.031]</code>；查询为 <code>1.015</code>，区间为 <code>[0.923, 1.048]</code>。两个区间都包含 <code>1</code>，方向并不稳定。6 位小数数据的耗时比较也有同样的限制。</p>
+<p>因此，目前适合记录的结论是：<strong>本地测试支持日志打包候选降低 I/O 和内存开销，尚未证实耗时稳定改善。</strong> 报告中的校准评分采用了假设基线，不能当作平台实测分数。</p>
+<p>最新可核对的项目记录生成于当天 19:58 左右，注明该候选尚未提交、推送或提测。之后是否有新操作，仍需另行确认。</p>
+<h2 id="section-4">四、协作分工也需要一次真实任务来验证</h2>
+<p>今天我还明确提出，希望 Claude 负责思考、Codex 负责执行。Windows 上的配置截图显示 Codex 已就绪，但也同时写着尚无活动的共享运行时，需要第一次任务或审查命令按需启动。</p>
+<p>这张截图可以作为配置进度记录，暂时还不能证明这条协作链路已经完成了一次实际代码任务。数据库里已经存在的执行日志，也不能自动归因于这套新配置。</p>
+<h2 id="section-5">收获与待确认事项</h2>
+<p>今天的学习记录里，值得保留的是几个具体检查点：读 Rust 表达式时先看接收者类型；分析链表时跟着指针移动和节点归属走；理解训练时分清损失、梯度与更新；做性能比较时同时保留成功项和退化项。</p>
+<p>接下来仍需要补齐三类证据：</p>
+<ol><li>链表合并实现是否已整合进练习，以及编译、边界测试和内存回收检查的结果。</li><li>日志打包候选的最终代码差异，以及是否产生了新的提交、提测与平台结果。</li><li>Claude 与 Codex 的新分工是否真正完成了一次任务，具体修改和检查结果是什么。</li></ol>
+<p>先把这些状态记清楚，后续继续学习和实验时，就能知道应该从哪里接着做。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/Rust/" rel="tag"># Rust</a><a href="/tags/链表/" rel="tag"># 链表</a><a href="/tags/unsafe/" rel="tag"># unsafe</a><a href="/tags/MiniVectorDB/" rel="tag"># MiniVectorDB</a><a href="/tags/神经网络/" rel="tag"># 神经网络</a><a href="/tags/测试/" rel="tag"># 测试</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/11/rust-conversions-clippy/" rel="prev">‹ Rust 转换与 Clippy：把类型、错误和检查结果分开看</a></div><div class="post-nav-item"><a href="/2026/11/13/rust-loops-and-trees/" rel="next">从冒泡排序到二叉搜索树：看清循环边界与节点关系 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一、链表合并：先看指针，再看连接顺序</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二、反向传播负责求梯度，优化器决定怎样更新</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三、数据库实验：没有通过的方案，也要留下结果</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四、协作分工也需要一次真实任务来验证</span></a></li><li class="nav-item"><a class="nav-link" href="#section-5"><span class="nav-text">收获与待确认事项</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">77</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
