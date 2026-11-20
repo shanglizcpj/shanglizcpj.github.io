@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从异步处理到三维定位：模型怎样接上实际任务 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/19/models-and-workflows/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从异步处理到三维定位：模型怎样接上实际任务">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/19/models-and-workflows/">
+<meta name="description" content="今天的讨论从一份数据库实验讲解稿开始，随后转到机器人论文和卷积神经网络。几个话题看起来分散，但整理下来，都绕不开同一个问题：模型之外，还有哪些环节必须解释清楚？">
+<meta property="og:description" content="今天的讨论从一份数据库实验讲解稿开始，随后转到机器人论文和卷积神经网络。几个话题看起来分散，但整理下来，都绕不开同一个问题：模型之外，还有哪些环节必须解释清楚？">
+<meta property="article:published_time" content="2026-11-19T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-19T14:54:53Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/19/models-and-workflows/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">从异步处理到三维定位：模型怎样接上实际任务</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-19T22:00:00+08:00">2026-11-19</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天的讨论从一份数据库实验讲解稿开始，随后转到机器人论文和卷积神经网络。几个话题看起来分散，但整理下来，都绕不开同一个问题：模型之外，还有哪些环节必须解释清楚？</p>
+<h2 id="section-1">一、五分钟讲解，不能只留下功能名</h2>
+<p>早上，我拿着已有的 seekdb 实验报告，请 AI 整理一份五分钟以内的讲解稿，随后追问：“异步怎么实现？”</p>
+<p>这句追问比罗列功能更具体。说“后台计算”容易，讲清楚前台和后台怎样配合，就要把步骤拆开：前台记录需要处理的事情，后台执行耗时操作，结果回来以后，再判断它是否仍然适用于当前的数据。</p>
+<p>这里先记一个一般性的理解，而不展开项目内部实现：异步并不是把函数换个地方运行就结束了。任务可能失败，数据可能在等待期间变化，先发出的请求也不一定先返回。说明异步机制时，除了画出正常流程，还要交代这些情况怎样处理。</p>
+<p>今天做的是围绕已有材料准备讲解、追问原理。报告本身编制于此前，不能把这次讨论写成今天新增的测试成绩，也暂不把讲稿准备等同于已经完成汇报。</p>
+<h2 id="section-2">二、GAM：先明确操作对象，再谈动作</h2>
+<p>今天还讨论了《Grounded Action Model: 3D Grounding as a Foundation for Robotics》这篇论文。</p>
+<p>从论文的摘要和引言看，GAM 关注的不只是让模型理解一句指令，而是把指令指向的对象同三维空间中的信息联系起来。语言、点或框等提示可以用于选定对象；对象相关的视觉特征和几何信息，再结合机器人的状态历史，用来预测一段动作。</p>
+<p>我先把它整理成三个问题：要操作哪个对象？这个对象在空间中是什么状态？机器人接下来应该怎样行动？这样拆开以后，“看懂场景”和“完成操作”之间还缺什么，就比较容易看出来。</p>
+<p>这部分目前是论文阅读和概念梳理，不是复现记录。论文里的实验结果也不能当成自己的实验成绩。后续如果继续读，值得沿着一次输入往下追：提示怎样选定对象，几何信息怎样进入模型，最后又怎样变成动作输出。</p>
+<p>论文项目页：<a href="https://grounded-action-model.github.io/" target="_blank" rel="noopener">Grounded Action Model</a>。</p>
+<h2 id="section-3">三、回到 CNN：从名称问到具体操作</h2>
+<p>傍晚的提问回到了基础：CNN 有哪些网络，适合哪些任务，以及最大池化和平均池化有什么区别。</p>
+<p>整理这组问题时，可以先不急着记一长串网络名字，而是把局部操作说明白。最大池化取一个区域中的最大值，平均池化取平均值。例如，区域内四个数是 1、2、3、6，两种结果分别是 6 和 3。前者保留最强响应，后者概括区域的平均响应，但不能因此断言其中一种在所有任务中都更好。</p>
+<p>这个小例子只是帮助区分概念，并不代表今天已经训练或比较了两个模型。理解了操作，再回头看网络把它放在哪里、希望保留什么信息，会比只记结构名称更有用。</p>
+<h2 id="section-4">四、下一步，把一个环节讲透</h2>
+<p>今天留下的重点不是“又学了几个模型”，而是怎样把描述讲具体。异步处理要说清任务和结果的关系；GAM 要说清目标、空间信息与动作的关系；CNN 的基础操作则需要落到能手算的小例子上。</p>
+<p>接下来准备讲解时，我想少放一些没有展开的术语，多留一条能从输入讲到输出的完整流程。至于代码是否跑通、实验是否完成，就留给实际记录来回答。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/数据库/" rel="tag"># 数据库</a><a href="/tags/机器人学习/" rel="tag"># 机器人学习</a><a href="/tags/CNN/" rel="tag"># CNN</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/18/probability-experiment/" rel="prev">‹ 概率题中的一步，实验报告里的数据</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一、五分钟讲解，不能只留下功能名</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二、GAM：先明确操作对象，再谈动作</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三、回到 CNN：从名称问到具体操作</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四、下一步，把一个环节讲透</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
