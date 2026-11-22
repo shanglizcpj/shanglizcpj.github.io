@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>把四个公式串起来：决策树为什么这样分 | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/20/decision-tree/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把四个公式串起来：决策树为什么这样分">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/20/decision-tree/">
+<meta name="description" content="今天早上，我连续问了四个问题：基尼指数是什么、信息熵怎么算、条件熵是什么、信息增益怎么算。单独看，每个概念都有一个公式；放在一起，它们其实在回答同一件事：一堆混在一起的样本，按某个条件分开以后，类别是不是更清楚了？">
+<meta property="og:description" content="今天早上，我连续问了四个问题：基尼指数是什么、信息熵怎么算、条件熵是什么、信息增益怎么算。单独看，每个概念都有一个公式；放在一起，它们其实在回答同一件事：一堆混在一起的样本，按某个条件分开以后，类别是不是更清楚了？">
+<meta property="article:published_time" content="2026-11-20T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-20T14:54:53Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/20/decision-tree/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">把四个公式串起来：决策树为什么这样分</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-20T22:00:00+08:00">2026-11-20</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天早上，我连续问了四个问题：基尼指数是什么、信息熵怎么算、条件熵是什么、信息增益怎么算。单独看，每个概念都有一个公式；放在一起，它们其实在回答同一件事：一堆混在一起的样本，按某个条件分开以后，类别是不是更清楚了？</p>
+<h2 id="section-1">一、先分清“现在多乱”和“分完还多乱”</h2>
+<p>在分类决策树里，可以先把标签想成不同颜色的小球。一个节点全是同一种颜色，就很纯；多种颜色混在一起，判断类别就更不确定。</p>
+<p>设节点中第 k 类的比例是 p_k，基尼不纯度为：</p>
+<p><code>Gini = 1 - Σ p_k²</code></p>
+<p>熵也描述类别分布的不确定性，但使用的是对数：</p>
+<p><code>H(Y) = -Σ p_k log₂(p_k)</code></p>
+<p>这里约定比例为 0 的项贡献为 0。两者都能衡量节点的不纯程度，却不是同一个数，不能把数值直接混着比较。</p>
+<p>再看一次划分：特征 A 把样本分成几个子集。条件熵 H(Y|A) 是各子集标签熵的加权平均，权重是它们各占多少样本。信息增益则是划分前的熵减去这个加权平均：</p>
+<p><code>IG(Y,A) = H(Y) - H(Y|A)</code></p>
+<p>这样记，比把四个定义平铺下来更顺：先算原来多不确定，再算分完后平均还剩多少，最后求差。</p>
+<h2 id="section-2">二、用同一组小数据算一遍</h2>
+<p><strong>以下是为了整理概念新增的虚构演示，不是课堂原题、真实数据集或今天跑出的实验。</strong></p>
+<p>假设有 10 个样本，其中 6 个正类、4 个负类。某个特征将它们分成两组：</p>
+<table><thead><tr><th>分组</th><th>正类</th><th>负类</th><th>样本数</th></tr></thead><tbody><tr><td>第一组</td><td>5</td><td>1</td><td>6</td></tr><tr><td>第二组</td><td>1</td><td>3</td><td>4</td></tr><tr><td>合计</td><td>6</td><td>4</td><td>10</td></tr></tbody></table>
+<p>划分前：</p>
+<p><code>H(Y) = -0.6 log₂(0.6) - 0.4 log₂(0.4) ≈ 0.971 bit</code></p>
+<p>第一组的熵约为 0.650 bit，第二组约为 0.811 bit。因为两组大小不同，不能直接各占一半：</p>
+<p><code>H(Y|A) = (6/10) × 0.650 + (4/10) × 0.811 ≈ 0.715 bit</code></p>
+<p>所以，这个划分的信息增益约为：</p>
+<p><code>IG(Y,A) ≈ 0.971 - 0.715 = 0.256 bit</code></p>
+<p>用基尼不纯度再看同一个划分，原节点为：</p>
+<p><code>1 - 0.6² - 0.4² = 0.480</code></p>
+<p>两个子节点分别约为 0.278 和 0.375，加权后约为 0.317，比原来的 0.480 小，下降约 0.163。</p>
+<p>两种算法在这个例子中都表明：划分后，节点平均更纯了。但这里只算了一个候选划分，还不能说它是最优划分，更不能仅凭训练样本的纯度下降，就说模型在新数据上一定更好。</p>
+<h2 id="section-3">三、最容易漏掉的是权重</h2>
+<p>这次整理，我想把“子集大小”单独圈出来。条件熵不是随意挑一个子集的熵，也不是永远取简单平均，而是看一个样本落到各个子集的比例。</p>
+<p>如果把上面两组直接平均，就相当于让 4 个样本和 6 个样本拥有同样的总权重，改变了原来的统计口径。公式里的 6/10 和 4/10 看起来只是两个系数，却决定了我们究竟在算什么。</p>
+<p>另一个需要分开的概念是信息增益与基尼下降。它们都是划分前后某种不纯度的变化，但基准不同。写题时最好先标清使用哪种指标，再代入数字，不要把“下降了多少”统称为信息增益。</p>
+<h2 id="section-4">四、晚上的新问题：视觉定位还能接到哪里</h2>
+<p>晚上，我又问了 visual grounding 的含义，以及它能与哪些技术结合形成新的研究方向，提问中举了医学和其他应用领域。</p>
+<p>和昨天讨论 GAM 时关注的目标与动作相比，今天的问题更偏向应用探索。不过，“可以结合什么”和“已经确定做什么”还不是一回事。这里先记下这两个问题，不把对话里出现的候选方向写成已经选定的项目，也不提前写实验效果。</p>
+<p>如果后面继续整理这个方向，我希望先把任务说得足够具体：输入是什么，要找什么，输出如何检查。今天的决策树笔记也提醒了我这一点。一个指标或者技术名称，只有落到明确的数据和步骤上，才真正方便理解和讨论。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/决策树/" rel="tag"># 决策树</a><a href="/tags/信息熵/" rel="tag"># 信息熵</a><a href="/tags/Visual-Grounding/" rel="tag"># Visual Grounding</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/19/models-and-workflows/" rel="prev">‹ 从异步处理到三维定位：模型怎样接上实际任务</a></div><div class="post-nav-item"><a href="/2026/11/21/how-to-read-a-paper/" rel="next">读论文时，我想先分清这三件事 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一、先分清“现在多乱”和“分完还多乱”</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">二、用同一组小数据算一遍</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">三、最容易漏掉的是权重</span></a></li><li class="nav-item"><a class="nav-link" href="#section-4"><span class="nav-text">四、晚上的新问题：视觉定位还能接到哪里</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">88</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
