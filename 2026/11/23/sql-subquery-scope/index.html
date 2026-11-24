@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>同样是求平均分，子查询少一个条件会怎样？ | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/23/sql-subquery-scope/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同样是求平均分，子查询少一个条件会怎样？">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/23/sql-subquery-scope/">
+<meta name="description" content="今天看 SQL 题时，我追问子查询为什么不成立，后来又问有没有别的方法。做这种题，先抄一遍语法容易，难的是看出内层到底在用哪些行。今天这篇笔记另外编一组数据，只比较两个看起来很像、实际回答了不同问题的查询。">
+<meta property="og:description" content="今天看 SQL 题时，我追问子查询为什么不成立，后来又问有没有别的方法。做这种题，先抄一遍语法容易，难的是看出内层到底在用哪些行。今天这篇笔记另外编一组数据，只比较两个看起来很像、实际回答了不同问题的查询。">
+<meta property="article:published_time" content="2026-11-23T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-23T14:54:53Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/23/sql-subquery-scope/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">同样是求平均分，子查询少一个条件会怎样？</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-23T22:00:00+08:00">2026-11-23</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今天看 SQL 题时，我追问子查询为什么不成立，后来又问有没有别的方法。做这种题，先抄一遍语法容易，难的是看出内层到底在用哪些行。今天这篇笔记另外编一组数据，只比较两个看起来很像、实际回答了不同问题的查询。</p>
+<h2 id="section-1">一个“平均分”，两种范围</h2>
+<p>目标是找出<strong>高于自己所在小组平均分</strong>的记录。下面是为说明概念构造的数据，不是原题截图：</p>
+<table><thead><tr><th>编号</th><th>小组</th><th>分数</th></tr></thead><tbody><tr><td>1</td><td>A</td><td>60</td></tr><tr><td>2</td><td>A</td><td>70</td></tr><tr><td>3</td><td>B</td><td>80</td></tr><tr><td>4</td><td>B</td><td>100</td></tr></tbody></table>
+<p>A 组平均分 65，B 组平均分 90，全表平均分 77.5。用这几个数，不看 SQL 也能先判断：应该留下 2 号和 4 号。如果写出的查询没有留下 70 分，却留下 80 分，就优先查一查是不是把“同组”算成了“全表”。</p>
+<h2 id="section-2">把外层的小组带进内层</h2>
+<pre><code class="language-sql">SELECT r.id, r.team, r.score
+FROM results AS r
+WHERE r.score &gt; (
+    SELECT AVG(x.score)
+    FROM results AS x
+    WHERE x.team = r.team
+)
+ORDER BY r.id;</code></pre>
+<p>内层的 <code>x</code> 是拿来求平均的记录，外层的 <code>r</code> 是当前要判断的记录。<code>x.team = r.team</code> 把两边连起来：给 2 号算平均时，只看 A 组；给 3 号算时，只看 B 组。内层引用了外层列，所以这是相关子查询。<a href="https://www.sqlite.org/lang_expr.html#correlated_subqueries" rel="noopener">SQLite 官方文档：相关子查询</a></p>
+<p>容易漏的是这条比较条件。删掉它，查询仍然可以执行，但内层变成全表平均 77.5，结果就变成 3 号和 4 号。遇到“结果不成立”，不妨先分清是语句无法运行，还是运行成功却筛错了数据。</p>
+<h2 id="section-3">换个写法，把平均分先列出来</h2>
+<p>我也想把“还有什么方法”留在笔记里。这个例子可以先按小组求平均，再把每条记录和本组的平均分连起来：</p>
+<pre><code class="language-sql">SELECT r.id, r.team, r.score
+FROM results AS r
+JOIN (
+    SELECT team, AVG(score) AS mean_score
+    FROM results
+    GROUP BY team
+) AS m ON r.team = m.team
+WHERE r.score &gt; m.mean_score
+ORDER BY r.id;</code></pre>
+<p>这组数据用两种正确写法都得到 2 号和 4 号。第一种把“用哪组”写在子查询里，第二种把小组平均分做成一张临时结果，再写匹配条件。哪一种执行得更快，不靠这里的四行数据判断。</p>
+<p>下次遇到类似的题，我会先把要求写成一句自然语言：<strong>哪条记录，要和哪一批记录算出的什么值比较？</strong> 如果两种写法看起来都对，就挑一条在全表平均和组内平均之间的记录，手算一下它到底该不该留下。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/SQL/" rel="tag"># SQL</a><a href="/tags/数据库/" rel="tag"># 数据库</a><a href="/tags/子查询/" rel="tag"># 子查询</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/22/crossed-polarizers/" rel="prev">‹ 偏振片转到 90°，光去哪了？</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">一个“平均分”，两种范围</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">把外层的小组带进内层</span></a></li><li class="nav-item"><a class="nav-link" href="#section-3"><span class="nav-text">换个写法，把平均分先列出来</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">88</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
