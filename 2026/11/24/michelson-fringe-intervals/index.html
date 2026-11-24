@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shanglizcpj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+
+
+
+
+
+
+
+
+<meta property="og:site_name" content="张陈培骥的个人博客">
+
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="张陈培骥">
+<meta name="twitter:card" content="summary">
+
+
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>测波长时，为什么镜面位移和条纹数要对上？ | 张陈培骥的个人博客</title>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<link rel="canonical" href="https://shanglizcpj.github.io/2026/11/24/michelson-fringe-intervals/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测波长时，为什么镜面位移和条纹数要对上？">
+<meta property="og:url" content="https://shanglizcpj.github.io/2026/11/24/michelson-fringe-intervals/">
+<meta name="description" content="今晚整理干涉实验数据时，我先问位移差要不要进位，又问了什么是 B 类不确定度。这两个问题都跟数字有关，不过在决定保留几位之前，还有一步更容易弄错：算波长时，位移和条纹数必须来自同一段记录。">
+<meta property="og:description" content="今晚整理干涉实验数据时，我先问位移差要不要进位，又问了什么是 B 类不确定度。这两个问题都跟数字有关，不过在决定保留几位之前，还有一步更容易弄错：算波长时，位移和条纹数必须来自同一段记录。">
+<meta property="article:published_time" content="2026-11-24T14:00:00Z">
+<meta property="article:modified_time" content="2026-11-24T14:54:53Z">
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">张陈培骥的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件工程学习记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+
+
+          <div class="content post posts-expand">
+
+
+
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+<link itemprop="mainEntityOfPage" href="https://shanglizcpj.github.io/2026/11/24/michelson-fringe-intervals/">
+<header class="post-header"><h1 class="post-title" itemprop="name headline">测波长时，为什么镜面位移和条纹数要对上？</h1><div class="post-meta"><span class="post-meta-item">发表于 <time itemprop="dateCreated datePublished" datetime="2026-11-24T22:00:00+08:00">2026-11-24</time></span><span class="post-meta-item">分类于 <a href="/categories/学习实践/">学习实践</a></span></div></header>
+<div class="post-body" itemprop="articleBody"><p>今晚整理干涉实验数据时，我先问位移差要不要进位，又问了什么是 B 类不确定度。这两个问题都跟数字有关，不过在决定保留几位之前，还有一步更容易弄错：算波长时，位移和条纹数必须来自同一段记录。</p>
+<h2 id="section-1">镜子走一段，光程差变两倍</h2>
+<p>迈克尔逊干涉仪的一臂里，光要走到反射镜，再沿那一臂返回。镜面沿光路移动 Δd，去程和回程各改变 Δd，所以两臂光程差的改变量为 2Δd（这里按空气中的常见近似）。在同一个观察点数过 N 个完整条纹周期，就有 <code>2Δd = Nλ</code>。这个 2 来自光的往返，不来自读数次数。<a href="https://openstax.org/books/university-physics-volume-3/pages/3-5-the-michelson-interferometer" rel="noopener">OpenStax：迈克尔逊干涉仪</a></p>
+<p>用一组<strong>虚构数据</strong>来核对。假设每隔 40 条纹记一次，跨过五个记录间隔，镜面实际移动 0.0640 mm。可以任选一种配法：</p>
+<table><thead><tr><th>怎么取</th><th>镜面位移</th><th>对应条纹数</th></tr></thead><tbody><tr><td>取五个间隔的总量</td><td>0.0640 mm</td><td>200</td></tr><tr><td>把总量除以五，取每个间隔的平均量</td><td>0.0128 mm</td><td>40</td></tr></tbody></table>
+<p>两种配法都得到 <code>λ = 0.000640 mm = 640 nm</code>。如果拿五个间隔的总位移直接除以单个间隔的 40 条，结果就会变成 3200 nm，刚好是正确值的五倍。还有个容易漏的细节：<strong>跨五个间隔要用相隔五格的两个读数</strong>，不是把五个读数当成五个间隔。这个例子只演示怎么算，不是我的实验结果。</p>
+<h2 id="section-2">进位和不确定度是两件事</h2>
+<p>我问要不要进位时，实际上需要把计算过程和最终写法分开。原始读数照录；中间计算尽量保留已有精度，避免每一步各自舍入。最后报告结果时，再根据课程要求和不确定度统一小数位。进位能改变写出来的数字，不会让仪器变得更精确。</p>
+<p>如果把例子里的 640 nm 与一个假定参考值 632.8 nm 比较，相对偏差约为 1.14%。它只回答“这次估计离参考值多远”。不确定度回答的是“根据测量和已知条件，这个估计有多不确定”。B 类分量可以根据仪器分辨率、校准资料等信息评估；最小分度值是一个输入，不等于最终波长的不确定度。用哪种模型，还要看误差界限、读数方式和仪器说明，再按测量关系把位移的不确定度传递到波长。<a href="https://www.nist.gov/pml/nist-technical-note-1297/nist-tn-1297-4-type-b-evaluation-standard-uncertainty" rel="noopener">NIST：B 类标准不确定度的评定</a></p>
+<p>下次我会在算式旁先写清楚起止读数和这段经过的条纹数，再检查单位，最后才决定保留几位。比起算完才回头猜某个数字属于哪一格，这样更容易找出差错。</p></div>
+<footer class="post-footer"><div class="post-tags"><a href="/tags/大学物理/" rel="tag"># 大学物理</a><a href="/tags/迈克尔逊干涉仪/" rel="tag"># 迈克尔逊干涉仪</a><a href="/tags/测量不确定度/" rel="tag"># 测量不确定度</a></div>
+<div class="post-nav"><div class="post-nav-item"><a href="/2026/11/23/sql-subquery-scope/" rel="prev">‹ 同样是求平均分，子查询少一个条件会怎样？</a></div><div class="post-nav-item"><a href="/archives/">全部文章 ›</a></div></div></footer></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+
+
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel"><ol class="nav"><li class="nav-item"><a class="nav-link" href="#section-1"><span class="nav-text">镜子走一段，光程差变两倍</span></a></li><li class="nav-item"><a class="nav-link" href="#section-2"><span class="nav-text">进位和不确定度是两件事</span></a></li></ol></div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">张陈培骥</p>
+  <div class="site-description" itemprop="description">记录编程学习与项目实践</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+
+
+
+<div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张陈培骥</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
